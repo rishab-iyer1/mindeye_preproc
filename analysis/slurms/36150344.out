@@ -1,0 +1,12 @@
+Collecting git+https://github.com/cvnlab/GLMsingle.git
+  Cloning https://github.com/cvnlab/GLMsingle.git to /tmp/pip-req-build-pen_0an1
+[22;0t]0;IPython: code/analysis[0;31m---------------------------------------------------------------------------[0m
+[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
+[0;32m/mnt/cup/labs/norman/rsiyer/rtmindeye/code/analysis/GLMsingle.py[0m in [0;36m<module>[0;34m[0m
+[1;32m    116[0m [0;34m[0m[0m
+[1;32m    117[0m [0mget_ipython[0m[0;34m([0m[0;34m)[0m[0;34m.[0m[0msystem[0m[0;34m([0m[0;34m'pip install git+https://github.com/cvnlab/GLMsingle.git'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 118[0;31m [0;32mimport[0m [0mglmsingle[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    119[0m [0;32mfrom[0m [0mglmsingle[0m[0;34m.[0m[0mglmsingle[0m [0;32mimport[0m [0mGLM_single[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    120[0m [0;34m[0m[0m
+
+[0;31mModuleNotFoundError[0m: No module named 'glmsingle'

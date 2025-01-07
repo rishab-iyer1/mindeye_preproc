@@ -1,0 +1,5 @@
+[22;0t]0;IPython: code/analysis[0;36m  File [0;32m"/mnt/cup/labs/norman/rsiyer/rtmindeye/code/analysis/GLMsingle.py"[0;36m, line [0;32m177[0m
+[0;31m    elif (sub=='sub-001' and session in ('ses-02', 'ses-03', 'ses-04')) or sub='sub-003':[0m
+[0m                                                                              ^[0m
+[0;31mSyntaxError[0m[0;31m:[0m invalid syntax
+

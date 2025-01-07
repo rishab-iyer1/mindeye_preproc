@@ -1,0 +1,5 @@
+[NbConvertApp] Converting notebook GLMsingle-multisession-2-3.ipynb to script
+[NbConvertApp] Writing 51493 bytes to GLMsingle-multisession-2-3.py
+  Running command git clone --filter=blob:none --quiet https://github.com/cvnlab/GLMsingle.git /tmp/pip-req-build-kmjmn3s1
+  Running command git submodule update --init --recursive -q
+chunks:   0%|          | 0/4 [00:00<?, ?it/s]slurmstepd: error: *** JOB 210443 ON spockmk2-11 CANCELLED AT 2024-09-24T14:55:24 ***

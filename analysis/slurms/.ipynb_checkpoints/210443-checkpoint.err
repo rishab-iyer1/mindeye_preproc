@@ -1,0 +1,4 @@
+[NbConvertApp] Converting notebook GLMsingle-multisession-2-3.ipynb to script
+[NbConvertApp] Writing 51493 bytes to GLMsingle-multisession-2-3.py
+  Running command git clone --filter=blob:none --quiet https://github.com/cvnlab/GLMsingle.git /tmp/pip-req-build-kmjmn3s1
+  Running command git submodule update --init --recursive -q

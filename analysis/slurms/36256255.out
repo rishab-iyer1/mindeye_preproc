@@ -1,0 +1,338 @@
+[22;0t]0;IPython: code/analysisdirectory to load preprocessed data from:
+	/jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003
+
+directory to save outputs:
+	/jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003
+
+/jukebox/norman/rsiyer/rtmindeye/data/bids/../design/csv/sub-003_ses-01.csv
+len_unique_images 852
+n_runs 16
+['all_stimuli/rtmindeye_stimuli/image_686_seed_1.png'
+ 'all_stimuli/rtmindeye_stimuli/image_262_seed_1.png'
+ 'all_stimuli/rtmindeye_stimuli/image_508_seed_1.png'
+ 'all_stimuli/rtmindeye_stimuli/image_671_seed_1.png']
+[596.70813508 600.71900325 604.72332096 608.734187  ]
+[0. 0. 0. 0.]
+run = 0
+run = 1
+run = 2
+run = 3
+run = 4
+run = 5
+run = 6
+run = 7
+run = 8
+run = 9
+run = 10
+run = 11
+run = 12
+run = 13
+run = 14
+run = 15
+Save average mask: /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/masks/sub-003/sub-003_ses-01_brain.nii.gz
+
+Mask dimensions: (1.5, 1.5, 1.5)
+
+Affine:
+[[  1.5          0.           0.         -72.61699677]
+ [  0.           1.5          0.         -79.29003143]
+ [  0.           0.           1.5        -59.4773941 ]
+ [  0.           0.           0.           1.        ]]
+
+There are 478003.0 voxels in the included brain mask
+
+checking epi data for run 1: /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-01_space-T1w_desc-preproc_bold.nii.gz
+
+Dimensions: (1.5, 1.5, 1.5, 2.0)
+Affine:
+[[  1.5          0.           0.         -72.61699677]
+ [  0.           1.5          0.         -79.29003143]
+ [  0.           0.           1.5        -59.4773941 ]
+ [  0.           0.           0.           1.        ]]
+
+(97, 128, 96)
+(97, 128, 96, 140)
+loading data for run 1 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-01_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-01_2D_bold ***
+
+loading data for run 2 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-02_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-02_2D_bold ***
+
+loading data for run 3 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-03_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-03_2D_bold ***
+
+loading data for run 4 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-04_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-04_2D_bold ***
+
+loading data for run 5 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-05_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-05_2D_bold ***
+
+loading data for run 6 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-06_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-06_2D_bold ***
+
+loading data for run 7 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-07_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-07_2D_bold ***
+
+loading data for run 8 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-08_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-08_2D_bold ***
+
+loading data for run 9 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-09_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-09_2D_bold ***
+
+loading data for run 10 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-10_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-010_2D_bold ***
+
+loading data for run 11 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-11_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-011_2D_bold ***
+
+loading data for run 12 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-12_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-012_2D_bold ***
+
+loading data for run 13 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-13_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-013_2D_bold ***
+
+loading data for run 14 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-14_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-014_2D_bold ***
+
+loading data for run 15 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-15_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-015_2D_bold ***
+
+loading data for run 16 : /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003/ses-01/func/sub-003_ses-01_task-study_run-16_space-T1w_desc-preproc_bold.nii.gz
+
+BOLD data shape: (478003, 140)
+TRs in this run: 140
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-016_2D_bold ***
+
+
+number of runs in BOLD data: 16
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-01_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-02_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-03_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-04_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-05_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-06_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-07_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-08_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-09_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-010_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-011_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-012_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-013_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-014_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-015_2D_upsampled_bold ***
+
+BOLD data shape: (478003, 280)
+TRs in this run: 280
+
+*** Saving data to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/sub-003_ses-01_task-study_run-016_2D_upsampled_bold ***
+
+
+number of runs in upsampled BOLD data: 16
+There are 16 runs in total
+
+XYZ dimensionality is: (97, 128, 96)
+
+The dimensions of the 2D data for each run are:
+ (478003, 280)
+ (478003, 280)
+ (478003, 280)
+ (478003, 280)
+ (478003, 280)
+ (478003, 280)
+ (478003, 280)
+ (478003, 280)
+The stimulus duration is 3 seconds
+
+The TR is 1 seconds
+
+There are 478003.0 voxels in the included brain mask
+
+Numeric precision of data is: <class 'numpy.float32'>
+
+{'R2thresh': 0,
+ 'brainR2': [],
+ 'brainexclude': False,
+ 'brainthresh': [99.0, 0.1],
+ 'chunklen': 50000,
+ 'extra_regressors': False,
+ 'firdelay': 30,
+ 'firpct': 99,
+ 'fracs': array([1.  , 0.95, 0.9 , 0.85, 0.8 , 0.75, 0.7 , 0.65, 0.6 , 0.55, 0.5 ,
+       0.45, 0.4 , 0.35, 0.3 , 0.25, 0.2 , 0.15, 0.1 , 0.05]),
+ 'hrffitmask': 1,
+ 'hrfmodel': 'optimise',
+ 'hrfthresh': 0.5,
+ 'lambda': 0,
+ 'n_boots': 100,
+ 'n_jobs': 1,
+ 'n_pcs': 10,
+ 'numforhrf': 50,
+ 'pcR2cutoff': [],
+ 'pcR2cutoffmask': 1,
+ 'pcstop': 1.05,
+ 'seed': 1734445321.901117,
+ 'suppressoutput': 0,
+ 'wantautoscale': 1,
+ 'wantfileoutputs': [0, 0, 0, 1],
+ 'wantfracridge': 1,
+ 'wantglmdenoise': 1,
+ 'wanthdf5': 0,
+ 'wantlibrary': 1,
+ 'wantlss': 0,
+ 'wantmemoryoutputs': [1, 1, 1, 1],
+ 'wantparametric': 0,
+ 'wantpercentbold': 1}
+shape of data before running GLMsingle:
+(478003, 280)
+shape of design matrix:
+(280, 850)
+saving outputs to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/glmsingle_ses-01
+running GLMsingle...
+*** DIAGNOSTICS ***:
+There are 16 runs.
+The number of conditions in this experiment is 850.
+The stimulus duration corresponding to each trial is 3.00 seconds.
+The TR (time between successive data points) is 1.00 seconds.
+The number of trials in each run is: [62, 63, 62, 63, 62, 63, 62, 63, 62, 63, 62, 63, 62, 63, 62, 63].
+The number of trials for each condition is: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 2, 2, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 2, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 2, 2, 1, 2, 2, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].
+For each condition, the number of runs in which it appears: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 2, 2, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 2, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 2, 2, 1, 2, 2, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 2, 1, 1, 1, 2, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].
+For each run, how much ending buffer do we have in seconds? [11, 10, 10, 10, 10, 11, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11].
+*** Saving design-related results to /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003/glmsingle_ses-01/DESIGNINFO.npy. ***
+*** FITTING DIAGNOSTIC RUN-WISE FIR MODEL ***
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mAttributeError[0m                            Traceback (most recent call last)
+[0;32m/mnt/cup/labs/norman/rsiyer/rtmindeye/code/analysis/GLMsingle.py[0m in [0;36m<module>[0;34m[0m
+[1;32m    644[0m        [0mtr[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    645[0m        [0moutputdir[0m[0;34m=[0m[0moutputdir_glmsingle[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 646[0;31m        [0mfiguredir[0m[0;34m=[0m[0mfiguredir_glmsingle[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    647[0m        )
+[1;32m    648[0m [0;34m[0m[0m
+
+[0;32m/mnt/cup/people/ri4541/fmri/lib64/python3.6/site-packages/glmsingle/glmsingle.py[0m in [0;36mfit[0;34m(self, design, data, stimdur, tr, outputdir, figuredir)[0m
+[1;32m    813[0m [0;34m[0m[0m
+[1;32m    814[0m             [0;31m# more figures[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 815[0;31m             [0mcmap[0m [0;34m=[0m [0mmpl[0m[0;34m.[0m[0mcolormaps[0m[0;34m[[0m[0;34m'hot'[0m[0;34m][0m[0;34m.[0m[0mresampled[0m[0;34m([0m[0;36m256[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    816[0m [0;34m[0m[0m
+[1;32m    817[0m             [0;32mif[0m [0mxyz[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mAttributeError[0m: module 'matplotlib' has no attribute 'colormaps'

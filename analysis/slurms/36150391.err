@@ -1,0 +1,7 @@
+[NbConvertApp] Converting notebook GLMsingle.ipynb to script
+[NbConvertApp] Writing 46842 bytes to GLMsingle.py
+  Running command git clone -q https://github.com/cvnlab/GLMsingle.git /tmp/pip-req-build-jgazyfoy
+  fatal: unable to access 'https://github.com/cvnlab/GLMsingle.git/': Failed connect to github.com:443; Connection timed out
+WARNING: Discarding git+https://github.com/cvnlab/GLMsingle.git. Command errored out with exit status 128: git clone -q https://github.com/cvnlab/GLMsingle.git /tmp/pip-req-build-jgazyfoy Check the logs for full command output.
+ERROR: Command errored out with exit status 128: git clone -q https://github.com/cvnlab/GLMsingle.git /tmp/pip-req-build-jgazyfoy Check the logs for full command output.
+slurmstepd: error: *** JOB 36150391 ON spock7-c2-4 CANCELLED AT 2024-11-08T10:36:58 DUE TO TIME LIMIT ***

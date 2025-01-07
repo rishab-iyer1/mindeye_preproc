@@ -1,0 +1,57 @@
+[22;0t]0;IPython: code/analysisdirectory to load preprocessed data from:
+	/jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/fmriprep/sub-003
+
+directory to save outputs:
+	/jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/glmsingle/sub-003
+
+/jukebox/norman/rsiyer/rtmindeye/data/bids/../design/csv/sub-003_ses-01.csv
+len_unique_images 852
+n_runs 16
+['all_stimuli/rtmindeye_stimuli/image_686_seed_1.png'
+ 'all_stimuli/rtmindeye_stimuli/image_262_seed_1.png'
+ 'all_stimuli/rtmindeye_stimuli/image_508_seed_1.png'
+ 'all_stimuli/rtmindeye_stimuli/image_671_seed_1.png']
+[596.70813508 600.71900325 604.72332096 608.734187  ]
+[0. 0. 0. 0.]
+run = 0
+run = 1
+run = 2
+run = 3
+run = 4
+run = 5
+run = 6
+run = 7
+run = 8
+run = 9
+run = 10
+run = 11
+run = 12
+run = 13
+run = 14
+run = 15
+Save average mask: /jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/masks/sub-003/sub-003_ses-01_brain.nii.gz
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mValueError[0m                                Traceback (most recent call last)
+[0;32m/mnt/cup/labs/norman/rsiyer/rtmindeye/code/analysis/GLMsingle.py[0m in [0;36m<module>[0;34m[0m
+[1;32m    285[0m [0;31m# plot[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    286[0m [0mt1_file[0m [0;34m=[0m [0mdefaced_dir[0m [0;34m+[0m [0msub[0m [0;34m+[0m [0;34m'_%s_T1w_defaced.nii.gz'[0m [0;34m%[0m[0msession[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 287[0;31m [0mt1_img[0m [0;34m=[0m [0mimage[0m[0;34m.[0m[0mload_img[0m[0;34m([0m[0mt1_file[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    288[0m [0mplot_roi[0m[0;34m([0m[0mavg_mask[0m[0;34m,[0m [0mbg_img[0m[0;34m=[0m[0mt1_img[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    289[0m [0;34m[0m[0m
+
+[0;32m/mnt/cup/people/ri4541/fmri/lib64/python3.6/site-packages/nilearn/image/image.py[0m in [0;36mload_img[0;34m(img, wildcards, dtype)[0m
+[1;32m   1273[0m [0;34m[0m[0m
+[1;32m   1274[0m     """
+[0;32m-> 1275[0;31m     [0;32mreturn[0m [0mcheck_niimg[0m[0;34m([0m[0mimg[0m[0;34m,[0m [0mwildcards[0m[0;34m=[0m[0mwildcards[0m[0;34m,[0m [0mdtype[0m[0;34m=[0m[0mdtype[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1276[0m [0;34m[0m[0m
+[1;32m   1277[0m [0;34m[0m[0m
+
+[0;32m/mnt/cup/people/ri4541/fmri/lib64/python3.6/site-packages/nilearn/_utils/niimg_conversions.py[0m in [0;36mcheck_niimg[0;34m(niimg, ensure_ndim, atleast_4d, dtype, return_iterator, wildcards)[0m
+[1;32m    272[0m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0mmessage[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    273[0m             [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 274[0;31m                 [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34m"File not found: '%s'"[0m [0;34m%[0m [0mniimg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    275[0m         [0;32melif[0m [0;32mnot[0m [0mos[0m[0;34m.[0m[0mpath[0m[0;34m.[0m[0mexists[0m[0;34m([0m[0mniimg[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    276[0m             [0;32mraise[0m [0mValueError[0m[0;34m([0m[0;34m"File not found: '%s'"[0m [0;34m%[0m [0mniimg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mValueError[0m: File not found: '/jukebox/norman/rsiyer/rtmindeye/data/bids/derivatives/deface/sub-003_ses-01_T1w_defaced.nii.gz'

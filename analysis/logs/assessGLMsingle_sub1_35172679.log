@@ -1,0 +1,17 @@
+Slurm job ID:  35172679
+Tue Apr 23 21:10:29 EDT 2024
+REMINDER! conda activate svd
+Running notebook 07 for sub-001
+[NbConvertApp] Converting notebook ./GLMsingle_mindeye_sub-001.ipynb to html
+0.02s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+0.00s - Debugger warning: It seems that frozen modules are being used, which may
+0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+0.00s - to python to disable frozen modules.
+0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+[NbConvertApp] WARNING | Alternative text is missing on 23 image(s).
+[NbConvertApp] Writing 1537333 bytes to notebook-glmsingle-output/GLMsingle_mindeye_sub-001.html
+Finished running notebook 07 for sub-001
+Tue Apr 23 22:35:22 EDT 2024
