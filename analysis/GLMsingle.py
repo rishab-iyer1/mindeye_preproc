@@ -18,15 +18,17 @@
 
 # What subject and session do you want to run? 
 
-# In[1]:
+# In[124]:
 
 
-sub = 'sub-003'
-session = 'ses-01'
-task='study'
+sub = 'sub-001'
+session = 'ses-05'
+task='A'
 
 if sub=='sub-002':
     n_runs=9
+elif sub=='sub-001' and session=='ses-05':
+    n_runs=5
 else:
     n_runs=16
     # n_runs=8
@@ -37,7 +39,7 @@ else:
 # In[2]:
 
 
-make_avg_mask = 0
+make_avg_mask = 1
 
 
 # Do you want to load the raw 4D data and run the time-intensive NiftiMasker? 
@@ -46,7 +48,7 @@ make_avg_mask = 0
 # In[3]:
 
 
-load_epi = 0
+load_epi = 1
 
 
 # ##### Do you need to upsample the fMRI data? If the upsampled data already exists, set this to 0.
@@ -54,7 +56,7 @@ load_epi = 0
 # In[4]:
 
 
-run_upsampling = 0
+run_upsampling = 1
 
 
 # Do you want to export design matrix to csv? 
@@ -126,7 +128,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 
 # ## Set paths and load settings
 
-# In[9]:
+# In[59]:
 
 
 example = 0
@@ -134,29 +136,41 @@ stimdur = 3
 if sub == 'sub-001' and session == 'ses-01':
     tr_orig = 1.8
     n_trs = 288
+elif sub == 'sub-001' and session == 'ses-05':
+    if task == 'A':
+        tr_orig = 2
+        n_trs = 280
+    elif task == 'B':
+        tr_orig = 1.5
+        n_trs = 288
+    elif task == 'C':
+        tr_orig = 1.5
+        n_trs = 288
+    else:
+        raise Exception("invalid task")
 else:
     tr_orig = 2
     n_trs = 280
 tr = 1 # after upsampling
 
 
-# In[10]:
+# In[126]:
 
 
 # bids directory
-if sub == 'sub-003' and session == 'ses-01':
-    homedir = f'/jukebox/norman/rsiyer/rtmindeye/data_{sub}_{session}/bids'
-elif sub == 'sub-001' and session == 'ses-01':
+if sub == 'sub-001' and session == 'ses-01':
     homedir = f'/jukebox/norman/rsiyer/rtmindeye/data_sub-001_sub_002_ses-01/bids'
 else:
-    raise Exception
+    homedir = f'/jukebox/norman/rsiyer/rtmindeye/data_{sub}_{session}/bids'
+    if not os.path.exists(homedir):
+        raise FileNotFoundError(f"Folder '{homedir}' does not exist.")
 
 # datadir is fmriprep folder for this subject, outputdir is glmsingle derivatives
 datadir = join(homedir,'derivatives','fmriprep',sub)
 maskdir = join(homedir,'derivatives','masks', sub)
 designdir = join(homedir, '../design/')
-# outputdir = join(homedir,'derivatives','glmsingle/')
-outputdir = join(homedir,'derivatives','glmsingle_nofithrf/')
+outputdir = join(homedir,'derivatives',f'glmsingle_task_{task}')
+# outputdir = join(homedir,'derivatives','glmsingle_nofithrf/')
 func_dir = join(datadir,f'{session}','func/')
 defaced_dir = join(homedir,'derivatives','deface/')
 savedir = f'{outputdir}/{sub}/'  # where to save voxel reliabilities
@@ -178,7 +192,7 @@ print(f'directory to save outputs:\n\t{path}\n', flush=True)
 # ## Load this subject's design matrix
 # design is in the format design[run] rows are timepoints, columns are distinct images
 
-# In[11]:
+# In[60]:
 
 
 if (sub=='sub-001' and session=='ses-01') or (sub=='sub-002' and session=='ses-01'):
@@ -187,10 +201,11 @@ if (sub=='sub-001' and session=='ses-01') or (sub=='sub-002' and session=='ses-0
     images = data['current_image'].values[23:]
     starts = data['trial.started'].values[23:]
     is_new_run = data['is_new_run'].values[23:]
-elif (sub=='sub-001' and session in ('ses-02', 'ses-03', 'ses-04')) or sub=='sub-003':
+elif (sub=='sub-001' and session in ('ses-02', 'ses-03', 'ses-04', 'ses-05')) or sub=='sub-003':
     filename = f"{designdir}csv/{sub}_{session}.csv"
     data = pd.read_csv(filename)
     data = data.dropna(subset=['current_image'])  # in these csv files, there are blanks between runs
+    # data = data.loc[data['current_image'] != 'blank.jpg']
     starts = data['trial.started'].values[10:]
     images = data['current_image'].values[10:]
     is_new_run = data['is_new_run'].values[10:]
@@ -212,13 +227,13 @@ print(is_new_run[:4])
 # assert len(np.unique(images[images!="blank.jpg"])) == 708
 
 
-# In[12]:
+# In[43]:
 
 
 # print(len(images)), [print(im.split('/')[-1]) for im in images]
 
 
-# In[13]:
+# In[106]:
 
 
 design = [np.zeros((n_trs, len_unique_images)) for _ in range(n_runs)]
@@ -241,12 +256,16 @@ for i in range(len(images)):
 
     image_idx = np.where(str(images[i])==unique_images)[0].item()
     timepoint = int(np.round(starts[i] - starting_time))
+    # print(i, timepoint, image_idx)
     design[cur_run][timepoint, image_idx] = 1
 
-    # if i < 10:
-    #     print(image_idx, timepoint)
+cols_to_delete = np.where(np.sum(np.sum(design, axis=0), axis=0) == 0)
+print(f'shape of design matrix: {np.array(design).shape}')
+print(f'deleting condition {cols_to_delete[0][0]} because it has no occurrences. ')
+for i in range(len(design)):
+    design[i] = np.delete(design[i], cols_to_delete, axis=1)
 
-# design = list(np.array(design)[:, :, :-2])  # remove the last two regressors: blank.jpg and nan
+print(f'shape of design matrix: {np.array(design).shape}')
 
 
 # In[14]:
@@ -289,11 +308,11 @@ for i in range(len(images)):
 # np.array(np.where(test[:,:,:10]))
 
 
-# In[19]:
+# In[107]:
 
 
 # Plot design matrix for each run
-run=1
+run=0
 plt.figure(figsize=(16,16))
 plt.imshow(design[run],interpolation='none')
 plt.title(' design matrix from run %i' %(run+1), fontsize=16)
@@ -301,13 +320,13 @@ plt.xlabel('conditions',fontsize=16)
 plt.ylabel('time (TR)',fontsize=16)
 
 
-# In[20]:
+# In[108]:
 
 
 # design[1][140:181,530:540]
 
 
-# In[21]:
+# In[109]:
 
 
 # # find conditions that are repeated in the same run
@@ -315,14 +334,14 @@ plt.ylabel('time (TR)',fontsize=16)
 #     print(np.where(np.sum(design[i], axis=0) > 1))
 
 
-# In[22]:
+# In[110]:
 
 
 # # find conditions that are repeated across all runs
 # np.where((np.sum(np.sum(np.array(design), axis=1), axis=0) > 1))
 
 
-# In[23]:
+# In[111]:
 
 
 # unique_images[535]
@@ -332,16 +351,16 @@ plt.ylabel('time (TR)',fontsize=16)
 # 
 # From GLMSingle FAQ: The safest approach is to completely zero out the data for a voxel that does not have full data for all of the runs that you are analyzing with GLMsingle.
 
-# In[24]:
+# In[113]:
 
 
 if make_avg_mask == 1:
     mask_imgs=[]
     for run in range(1,n_runs+1):
         if run < 10:
-            mask_name = func_dir + sub + '_%s_task-study_run-0%i_space-T1w_desc-brain_mask.nii.gz' % (session, run)
+            mask_name = func_dir + sub + '_%s_task-%s_run-0%i_space-T1w_desc-brain_mask.nii.gz' % (session, task, run)
         else:
-            mask_name = func_dir + sub + '_%s_task-study_run-%i_space-T1w_desc-brain_mask.nii.gz' % (session, run)
+            mask_name = func_dir + sub + '_%s_task-%s_run-%i_space-T1w_desc-brain_mask.nii.gz' % (session, task, run)
         mask_imgs.append(mask_name)
     
     # intersect all session 1 brain masks    
@@ -352,14 +371,14 @@ if make_avg_mask == 1:
     affine_mat = avg_mask.affine
     hdr = avg_mask.header  # get a handle for the .nii file's header
     hdr.set_zooms((dimsize[0], dimsize[1], dimsize[2]))
-    output_name = maskdir + '/%s_%s_brain.nii.gz' % (sub, session)
+    output_name = maskdir + '/%s_%s_task-%s_brain.nii.gz' % (sub, session, task)
     print('Save average mask:', output_name)
     nib.save(avg_mask, output_name)
     print('')
     
 elif make_avg_mask == 0:
     #Load brain mask
-    file_in = maskdir + '/%s_%s_brain.nii.gz' % (sub, session)
+    file_in = maskdir + '/%s_%s_task-%s_brain.nii.gz' % (sub, session, task)
     print('Loading average brain mask:', file_in)
     print('')
     avg_mask=nib.load(file_in)
@@ -386,11 +405,11 @@ print(f'There are {np.sum(brain)} voxels in the included brain mask\n')
 # ## Apply mask to each run of functional data
 # Data will go from 4D (x,y,z,t) to 2D
 
-# In[25]:
+# In[114]:
 
 
 # get some info about epi data by loading study run 1
-epi_file=f"{datadir}/{session}/func/{sub}_{session}_task-study_run-01_space-T1w_desc-preproc_bold.nii.gz"
+epi_file=f"{datadir}/{session}/func/{sub}_{session}_task-{task}_run-01_space-T1w_desc-preproc_bold.nii.gz"
 epi_data=nib.load(epi_file)
 run1=epi_data.get_fdata()
 
@@ -414,7 +433,7 @@ assert avg_mask.header.get_zooms() == epi_dimsize[:3]
 assert avg_mask.affine.all() == epi_data.affine.all()
 
 
-# In[26]:
+# In[72]:
 
 
 # variables that will contain bold time-series and design matrices from each run
@@ -426,9 +445,9 @@ if load_epi == 1:
 
     for run in range(0,n_runs):
         if run < 9:
-            epi_file=datadir + '/%s/func/%s_%s_task-study_run-0%i_space-T1w_desc-preproc_bold.nii.gz' % (session,sub,session,run+1)
+            epi_file=datadir + '/%s/func/%s_%s_task-%s_run-0%i_space-T1w_desc-preproc_bold.nii.gz' % (session,sub,session,task,run+1)
         else:
-            epi_file=datadir + '/%s/func/%s_%s_task-study_run-%i_space-T1w_desc-preproc_bold.nii.gz' % (session,sub,session,run+1)
+            epi_file=datadir + '/%s/func/%s_%s_task-%s_run-%i_space-T1w_desc-preproc_bold.nii.gz' % (session,sub,session,task,run+1)
     
         print('loading data for run', run+1, ':', epi_file)
         #print(run,ses,task,rr)
@@ -449,7 +468,7 @@ if load_epi == 1:
         print('TRs in this run:', TR_run[run])
         
         # save individual run data to npy file
-        filename = os.path.join(outputdir, sub, '%s_%s_task-study_run-0%i_2D_bold' %(sub,session,run+1))
+        filename = os.path.join(outputdir, sub, '%s_%s_task-%s_run-0%i_2D_bold' %(sub,session,task,run+1))
         print(f'\n*** Saving data to {filename} ***\n')
         np.save(filename, epi_mask_data)
 
@@ -457,7 +476,7 @@ elif load_epi == 0:
     for run in range(0,n_runs):        
         
         # load npy data file
-        filename = os.path.join(outputdir, sub, '%s_%s_task-study_run-0%i_2D_bold.npy' %(sub,session,run+1))
+        filename = os.path.join(outputdir, sub, '%s_%s_task-%s_run-0%i_2D_bold.npy' %(sub,session,task,run+1))
         print(f'\n*** Loading data from {filename} ***\n')
         epi_mask_data = np.load(filename)
         
@@ -476,7 +495,7 @@ print('number of runs in BOLD data:', len(data))
 # At this point, we have extracted all brain voxels and flattened the data to 2D (voxels,TR). 
 # Now we will interpolate the time-series to go from 1.5 sec TR to 1 sec TR. 
 
-# In[27]:
+# In[73]:
 
 
 from tseriesinterp import *
@@ -487,13 +506,13 @@ from tseriesinterp import *
 # from tseriesinterp import * # or whatever name you want.
 
 
-# In[28]:
+# In[74]:
 
 
 # data[0]
 
 
-# In[29]:
+# In[75]:
 
 
 # Upsample one run as an example
@@ -501,7 +520,7 @@ from tseriesinterp import *
 # data_upsampled.shape
 
 
-# In[30]:
+# In[76]:
 
 
 voxel_id=500
@@ -519,7 +538,7 @@ ax.set_ylabel('Voxel Intensity')
 # ax.set_ylabel('Voxel Intensity')
 
 
-# In[31]:
+# In[77]:
 
 
 data_upsampled = []
@@ -539,7 +558,7 @@ if run_upsampling == 1:
         print('TRs in this run:', TR_run_upsampled[run])
     
         # save individual run data to npy file
-        filename = os.path.join(outputdir, sub, '%s_%s_task-study_run-0%i_2D_upsampled_bold' %(sub,session,run+1))
+        filename = os.path.join(outputdir, sub, '%s_%s_task-%s_run-0%i_2D_upsampled_bold' %(sub,session,task,run+1))
         print(f'\n*** Saving data to {filename} ***\n')
         np.save(filename, data_new)
 
@@ -547,7 +566,7 @@ elif run_upsampling == 0:
     
     for run in range(0,n_runs):        
         # load npy data file
-        filename = os.path.join(outputdir, sub, '%s_%s_task-study_run-0%i_2D_upsampled_bold.npy' %(sub,session,run+1))
+        filename = os.path.join(outputdir, sub, '%s_%s_task-%s_run-0%i_2D_upsampled_bold.npy' %(sub,session,task,run+1))
         print(f'\n*** Loading data from {filename} ***\n')
         data_new = np.load(filename)
         
@@ -562,15 +581,22 @@ print('')
 print('number of runs in upsampled BOLD data:', len(data_upsampled))   
 
 
-# In[32]:
+# In[80]:
+
+
+len(data_upsampled)
+
+
+# In[115]:
 
 
 # print some relevant metadata
 print(f'There are {len(data_upsampled)} runs in total\n')
 #print(f'N = {data[0].shape[1]} TRs per run\n')
 print(f'XYZ dimensionality is: {xyz}\n')
-print(f'The dimensions of the 2D data for each run are:\n {data_upsampled[0].shape}\n {data_upsampled[1].shape}\n {data_upsampled[2].shape}') 
-print(f' {data_upsampled[3].shape}\n {data_upsampled[4].shape}\n {data_upsampled[5].shape}\n {data_upsampled[6].shape}\n {data_upsampled[7].shape}')
+print(f'The dimensions of the 2D data for each run are:')
+for i in range(len(data_upsampled)):
+    print(f'{data_upsampled[i].shape}') 
 print(f'The stimulus duration is {stimdur} seconds\n')
 print(f'The TR is {tr} seconds\n')
 print(f'There are {np.sum(brain)} voxels in the included brain mask\n')
@@ -578,26 +604,26 @@ print(f'There are {np.sum(brain)} voxels in the included brain mask\n')
 print(f'Numeric precision of data is: {type(data[0][0,0])}\n')
 
 
-# In[34]:
+# In[116]:
 
 
-assert not np.all(data_upsampled[0] == data_upsampled[10])
+assert not np.all(data_upsampled[0] == data_upsampled[1])
 
 
-# In[ ]:
+# In[123]:
 
 
 # plot example slice from run 1 and run 16
 # first, we need to unmask the data to get it back into 3D/4D format:
 z = 46
-for runnum in range(16):
+for runnum in range(n_runs):
     X = nilearn.masking.unmask(data_upsampled[runnum].T, avg_mask)
     run = X.get_fdata()
 
     plt.figure(figsize=(20,6))
     plt.subplot(121)
     plt.imshow(run[:,:,z,0])
-    plt.title('example slice from run 1',fontsize=16)
+    plt.title('example slice from run {runnum}',fontsize=16)
     
     # plt.figure(figsize=(20,6))
     # plt.subplot(121)
@@ -605,7 +631,7 @@ for runnum in range(16):
     # plt.title('example slice from run 9',fontsize=16)
 
 
-# In[ ]:
+# In[118]:
 
 
 # plot example slice from run 1 and run 16
@@ -613,7 +639,7 @@ for runnum in range(16):
 X = nilearn.masking.unmask(data_upsampled[0].T, avg_mask)
 run1 = X.get_fdata()
 
-X = nilearn.masking.unmask(data_upsampled[8].T, avg_mask)
+X = nilearn.masking.unmask(data_upsampled[n_runs-1].T, avg_mask)
 run16 = X.get_fdata()
 
 z=40
@@ -628,7 +654,7 @@ plt.imshow(run16[:,:,z,8])
 plt.title('example slice from run 9',fontsize=16)
 
 
-# In[ ]:
+# In[119]:
 
 
 # Plot design matrix for each run
@@ -642,7 +668,7 @@ for run in range(n_runs):
 
 # ## Run GLMsingle with default parameters to estimate single-trial betas
 
-# In[ ]:
+# In[120]:
 
 
 # outputs and figures will be stored in a folder (you can specify its name
@@ -694,7 +720,7 @@ for run in range(n_runs):
 #     fractional value for the type-D model.
 
 
-# In[ ]:
+# In[121]:
 
 
 # create a directory for saving GLMsingle outputs
@@ -707,9 +733,9 @@ os.makedirs(figuredir_glmsingle,exist_ok=True)
 opt = dict()
 
 # set important fields for completeness (but these would be enabled by default)
-opt['wantlibrary'] = 0
-opt['wantglmdenoise'] = 1
-opt['wantfracridge'] = 1
+# opt['wantlibrary'] = 1
+# opt['wantglmdenoise'] = 1
+# opt['wantfracridge'] = 1
 
 # for the purpose of this example we will keep the relevant outputs in memory
 # and also save them to the disk
@@ -725,7 +751,7 @@ glmsingle_obj = GLM_single(opt)
 pprint(glmsingle_obj.params)
 
 
-# In[ ]:
+# In[122]:
 
 
 print('shape of data before running GLMsingle:')
@@ -734,7 +760,7 @@ print('shape of design matrix:')
 print(design[0].shape)
 
 
-# In[ ]:
+# In[40]:
 
 
 # Try running with brainexclude=avg_mask
@@ -817,16 +843,16 @@ print(
 )
 
 
-# In[ ]:
+# In[41]:
 
 
-results_glmsingle['typea']['onoffR2'].shape
+# results_glmsingle['typea']['onoffR2'].shape
 
 
-# In[ ]:
+# In[42]:
 
 
-avg_mask.get_fdata().shape
+# avg_mask.get_fdata().shape
 
 
 # ## Summary of important outputs
@@ -841,7 +867,7 @@ avg_mask.get_fdata().shape
 # 
 # * FRACvalue -> is the fractional ridge regression regularization level chosen for each voxel. values closer to 1 mean less regularization.
 
-# In[ ]:
+# In[43]:
 
 
 # GLMsingle output is in 2D format (voxels,samples)
@@ -850,7 +876,7 @@ avg_mask.get_fdata().shape
 # X_hrf = X.get_fdata()
 
 
-# In[ ]:
+# In[44]:
 
 
 # results_out = {
@@ -860,7 +886,7 @@ avg_mask.get_fdata().shape
 #                     }
 
 
-# In[ ]:
+# In[45]:
 
 
 # convert everything back to 3D/4D array format
@@ -903,13 +929,13 @@ for model in range(len(model_types)):
 
 # ## Plot a slice of brain showing GLMsingle outputs
 
-# In[ ]:
+# In[46]:
 
 
 # results_glmsingle_3D['typeb'][plot_fields[i]].shape
 
 
-# In[ ]:
+# In[47]:
 
 
 # # we are going to plot several outputs from the FIT_HRF_GLMdenoise_RR GLM,
@@ -950,7 +976,7 @@ for model in range(len(model_types)):
 #     plt.axis(False)
 
 
-# In[ ]:
+# In[48]:
 
 
 # # we are going to plot several outputs from the FIT_HRF_GLMdenoise_RR GLM,
@@ -984,32 +1010,32 @@ for model in range(len(model_types)):
 # plt.axis(False)
 
 
-# In[ ]:
+# In[49]:
 
 
 # np.all(np.squeeze(results_glmsingle_3D['typec']['betasmd']) == results_glmsingle_3D['typec']['betasmd'])
 
 
-# In[ ]:
+# In[50]:
 
 
 # results_assumehrf_3D['typeb']['betasmd'].shape
 
 
-# In[ ]:
+# In[51]:
 
 
 # plot_data = np.nanmean(np.squeeze(results_glmsingle_3D['typeb']['betasmd']),3)
 # plt.imshow(plot_data[:, :, 40],clim=[-.4,.4])
 
 
-# In[ ]:
+# In[52]:
 
 
 # np.nanmean(np.squeeze(results_glmsingle_3D['typea']['betasmd']),3)
 
 
-# In[ ]:
+# In[53]:
 
 
 # # we are going to plot several outputs from the FIT_HRF_GLMdenoise_RR GLM,
@@ -1050,7 +1076,7 @@ for model in range(len(model_types)):
 #     plt.axis(False)
 
 
-# In[ ]:
+# In[54]:
 
 
 # we are going to plot several outputs from the FIT_HRF_GLMdenoise_RR GLM,
@@ -1093,7 +1119,7 @@ for i in range(len(plot_fields)):
 
 # ## Run a baseline GLM to compare with GLMsingle outputs
 
-# In[ ]:
+# In[55]:
 
 
 # for comparison purposes we are going to run a standard GLM
@@ -1133,7 +1159,7 @@ glmbaseline_obj = GLM_single(opt)
 pprint(glmbaseline_obj.params)
 
 
-# In[ ]:
+# In[56]:
 
 
 start_time = time.time()
@@ -1192,7 +1218,7 @@ print(
 )
 
 
-# In[ ]:
+# In[57]:
 
 
 # convert back to 3D/4D array format
@@ -1224,7 +1250,7 @@ for model in range(len(model_types)):
         print('')
 
 
-# In[ ]:
+# In[58]:
 
 
 # create dictionary containing the GLM betas from the four different models we will compare.
@@ -1246,7 +1272,7 @@ models['fithrf_glmdenoise_rr'] = results_glmsingle_3D['typed']['betasmd']
 # 
 # In the code below, we are attempting to locate the indices in the beta weight GLMsingle outputs modelmd(x,y,z,trials) that correspond to repeated images.
 
-# In[ ]:
+# In[59]:
 
 
 if run_reliability == 1:
@@ -1271,7 +1297,7 @@ if run_reliability == 1:
     # involved presentation of the 496th condition, and so on.
 
 
-# In[ ]:
+# In[60]:
 
 
 # in order to compute split-half reliability, we have to do some indexing.
@@ -1297,7 +1323,7 @@ if run_reliability == 1:
     print(repindices.shape, '(repetitions, condition)')
 
 
-# In[ ]:
+# In[61]:
 
 
 if run_reliability == 1:
@@ -1318,7 +1344,7 @@ if run_reliability == 1:
 
 # ## Compute median split-half reliabilty within the ROI for each beta version
 
-# In[ ]:
+# In[62]:
 
 
 # finally, let's compute split-half reliability. we are going to loop
@@ -1356,7 +1382,7 @@ if run_reliability == 1:
         vox_reliabilities.append(rels)
 
 
-# In[ ]:
+# In[63]:
 
 
 # load mask defining liberal visual cortex ROI
@@ -1386,7 +1412,7 @@ roi = roi.astype(bool)
 print(roi.shape)
 
 
-# In[ ]:
+# In[64]:
 
 
 # Save voxel reliabilities in NSDgeneral ROI
@@ -1400,7 +1426,7 @@ if run_reliability == 1:
 
 # ## Assess change in reliability yielded by GLMsingle
 
-# In[ ]:
+# In[65]:
 
 
 # for each GLM we will calculate median reliability for voxels within the
@@ -1419,7 +1445,7 @@ if run_reliability == 1:
     #plt.ylim([0.1,0.2])
 
 
-# In[ ]:
+# In[66]:
 
 
 datasets = ['v1'] #glmsingle versions
@@ -1430,7 +1456,7 @@ info['v1']['subjs'] = ['sub-001']
 info['methods'] = ['assumehrf', 'fithrf', 'fithrf_glmdenoise', 'fithrf_glmdenoise_rr']
 
 
-# In[ ]:
+# In[67]:
 
 
 reliability = dict()
@@ -1485,7 +1511,7 @@ for ds in datasets:
         
 
 
-# In[ ]:
+# In[68]:
 
 
 draw_plots = True
@@ -1538,7 +1564,7 @@ if draw_plots:
             
 
 
-# In[ ]:
+# In[69]:
 
 
 ft = 16
