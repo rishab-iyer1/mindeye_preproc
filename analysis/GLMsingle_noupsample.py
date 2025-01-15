@@ -37,7 +37,7 @@ else:
 # In[2]:
 
 
-make_avg_mask = 0
+make_avg_mask = 1
 
 
 # Do you want to load the raw 4D data and run the time-intensive NiftiMasker? 
@@ -46,7 +46,7 @@ make_avg_mask = 0
 # In[3]:
 
 
-load_epi = 0
+load_epi = 1
 
 
 # ##### Do you need to upsample the fMRI data? If the upsampled data already exists, set this to 0.
@@ -54,7 +54,7 @@ load_epi = 0
 # In[4]:
 
 
-run_upsampling = 0
+run_upsampling = 1
 
 
 # Do you want to export design matrix to csv? 
@@ -137,7 +137,7 @@ if sub == 'sub-001' and session == 'ses-01':
 else:
     tr_orig = 2
     n_trs = 280
-tr = 1 # after upsampling
+tr = 2 # after upsampling
 
 
 # In[10]:
@@ -156,7 +156,7 @@ datadir = join(homedir,'derivatives','fmriprep',sub)
 maskdir = join(homedir,'derivatives','masks', sub)
 designdir = join(homedir, '../design/')
 # outputdir = join(homedir,'derivatives','glmsingle/')
-outputdir = join(homedir,'derivatives','glmsingle_nofithrf/')
+outputdir = join(homedir,'derivatives','glmsingle_noupsample/')
 func_dir = join(datadir,f'{session}','func/')
 defaced_dir = join(homedir,'derivatives','deface/')
 savedir = f'{outputdir}/{sub}/'  # where to save voxel reliabilities
@@ -479,12 +479,12 @@ print('number of runs in BOLD data:', len(data))
 # In[27]:
 
 
-from tseriesinterp import *
+# from tseriesinterp import *
 
-# import importlib
-# import tseriesinterp #import the module here, so that it can be reloaded.
-# importlib.reload(tseriesinterp)
-# from tseriesinterp import * # or whatever name you want.
+# # import importlib
+# # import tseriesinterp #import the module here, so that it can be reloaded.
+# # importlib.reload(tseriesinterp)
+# # from tseriesinterp import * # or whatever name you want.
 
 
 # In[28]:
@@ -504,65 +504,71 @@ from tseriesinterp import *
 # In[30]:
 
 
-voxel_id=500
-
-f, ax = plt.subplots(1,1, figsize=(14,5))
-ax.plot(data[0][voxel_id, :])
-ax.set_title('Voxel time series before upsampling, voxel id = %d' % voxel_id)
-ax.set_xlabel('TR')
-ax.set_ylabel('Voxel Intensity')
+# voxel_id=500
 
 # f, ax = plt.subplots(1,1, figsize=(14,5))
-# ax.plot(data_upsampled[voxel_id, :])
-# ax.set_title('Voxel time series after upsampling, voxel id = %d' % voxel_id)
+# ax.plot(data[0][voxel_id, :])
+# ax.set_title('Voxel time series before upsampling, voxel id = %d' % voxel_id)
 # ax.set_xlabel('TR')
 # ax.set_ylabel('Voxel Intensity')
 
+# # f, ax = plt.subplots(1,1, figsize=(14,5))
+# # ax.plot(data_upsampled[voxel_id, :])
+# # ax.set_title('Voxel time series after upsampling, voxel id = %d' % voxel_id)
+# # ax.set_xlabel('TR')
+# # ax.set_ylabel('Voxel Intensity')
 
-# In[31]:
+
+# In[ ]:
 
 
-data_upsampled = []
-TR_run_upsampled = []
+# data_upsampled = []
+# TR_run_upsampled = []
 
-if run_upsampling == 1:
+# if run_upsampling == 1:
     
-    for run in range(0,n_runs): 
-        # perform interpolation
-        data_new = tseriesinterp(data[run], tr_orig, tr, dim=1)
+#     for run in range(0,n_runs): 
+#         # perform interpolation
+#         data_new = tseriesinterp(data[run], tr_orig, tr, dim=1)
     
-        # add this run's data to data variable
-        data_upsampled.append(data_new)
-        TR_run_upsampled.append(data_new.shape[1])
+#         # add this run's data to data variable
+#         data_upsampled.append(data_new)
+#         TR_run_upsampled.append(data_new.shape[1])
             
-        print('BOLD data shape:', data_upsampled[run].shape)
-        print('TRs in this run:', TR_run_upsampled[run])
+#         print('BOLD data shape:', data_upsampled[run].shape)
+#         print('TRs in this run:', TR_run_upsampled[run])
     
-        # save individual run data to npy file
-        filename = os.path.join(outputdir, sub, '%s_%s_task-study_run-0%i_2D_upsampled_bold' %(sub,session,run+1))
-        print(f'\n*** Saving data to {filename} ***\n')
-        np.save(filename, data_new)
+#         # save individual run data to npy file
+#         filename = os.path.join(outputdir, sub, '%s_%s_task-study_run-0%i_2D_upsampled_bold' %(sub,session,run+1))
+#         print(f'\n*** Saving data to {filename} ***\n')
+#         np.save(filename, data_new)
 
-elif run_upsampling == 0:
+# elif run_upsampling == 0:
     
-    for run in range(0,n_runs):        
-        # load npy data file
-        filename = os.path.join(outputdir, sub, '%s_%s_task-study_run-0%i_2D_upsampled_bold.npy' %(sub,session,run+1))
-        print(f'\n*** Loading data from {filename} ***\n')
-        data_new = np.load(filename)
+#     for run in range(0,n_runs):        
+#         # load npy data file
+#         filename = os.path.join(outputdir, sub, '%s_%s_task-study_run-0%i_2D_upsampled_bold.npy' %(sub,session,run+1))
+#         print(f'\n*** Loading data from {filename} ***\n')
+#         data_new = np.load(filename)
         
-        # add this run's data to data variable
-        data_upsampled.append(data_new)
-        TR_run_upsampled.append(data_new.shape[1])
+#         # add this run's data to data variable
+#         data_upsampled.append(data_new)
+#         TR_run_upsampled.append(data_new.shape[1])
         
-        print('BOLD data shape:', data_upsampled[run].shape)
-        print('TRs in this run:', TR_run_upsampled[run])
+#         print('BOLD data shape:', data_upsampled[run].shape)
+#         print('TRs in this run:', TR_run_upsampled[run])
             
-print('')
-print('number of runs in upsampled BOLD data:', len(data_upsampled))   
+# print('')
+# print('number of runs in upsampled BOLD data:', len(data_upsampled))   
 
 
-# In[32]:
+# In[ ]:
+
+
+data_upsampled = data
+
+
+# In[ ]:
 
 
 # print some relevant metadata
@@ -576,12 +582,6 @@ print(f'The TR is {tr} seconds\n')
 print(f'There are {np.sum(brain)} voxels in the included brain mask\n')
 #print(f'There are {np.sum(roi)} voxels in the included visual ROI\n')
 print(f'Numeric precision of data is: {type(data[0][0,0])}\n')
-
-
-# In[34]:
-
-
-assert not np.all(data_upsampled[0] == data_upsampled[10])
 
 
 # In[ ]:
@@ -707,7 +707,7 @@ os.makedirs(figuredir_glmsingle,exist_ok=True)
 opt = dict()
 
 # set important fields for completeness (but these would be enabled by default)
-opt['wantlibrary'] = 0
+opt['wantlibrary'] = 1
 opt['wantglmdenoise'] = 1
 opt['wantfracridge'] = 1
 

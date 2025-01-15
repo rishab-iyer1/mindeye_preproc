@@ -22,6 +22,7 @@ singularity run --cleanenv \
                     MNI152NLin2009cAsym:res-native \
     --write-graph --work-dir /scratch \
     /project/data/bids /project/data/bids/derivatives/fmriprep participant \
+    --ignore fieldmaps --use-syn-sdc
     
 
  # many usage options

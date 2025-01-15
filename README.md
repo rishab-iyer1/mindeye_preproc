@@ -3,9 +3,11 @@
 
 1. data transfer
     - ```ssh ri4541@scotty.princeton.edu```
-    - Create a new data folder, e.g. data_sub-003_ses-01 and subfolders called “dicom” and “work” 
+    - Create a new folder called "data" and subfolders called “dicom” and “work” 
+        - this way you don't have to modify globals.sh; it looks for a folder named "data"
+        - later, rename with BIDS name e.g. data_sub-003_ses-01
     - transfer dicoms from jukebox to the newly created data folder
-        - example usage: ```rsync -aP /jukebox/dicom/conquest/Prisma-MSTZ400D/NormaL/2024/003_ses01_rtmindeye-1213-1401/ /jukebox/norman/rsiyer/rtmindeye/<data>/dicom```
+        - example usage: ```rsync -aP /jukebox/dicom/conquest/Prisma-MSTZ400D/NormaL/2024/003_ses01_rtmindeye-1213-1401/ /jukebox/norman/rsiyer/rtmindeye/data/dicom```
     - Rename the dcm folder to the dicom's name, e.g. 03_ses01_rtmindeye-1213-1401
 
 
@@ -15,6 +17,7 @@
     - ```source ~/fmri/bin/activate``` PyDeface should be pip installed 
 
 1. ```preprocessing/step1_preproc.sh```
+    - ```cd preprocessing```
     - example usage: ```./step1_preproc.sh 003 01 003_ses01_rtmindeye-1213-1401```
         - uses heudiconv to convert DICOMs to BIDS format
         - uses PyDeface to deface images
@@ -32,10 +35,12 @@
         - address any red (errors); can ignore the yellow (warnings) because fMRIPrep will still work
       
 4. ```preprocessing/run_mriqc.sh```
+    - example usage: ```./run_mriqc.sh 003```
     - quality control checks, verify outputs manually to look for outliers 
         - absolute values don't matter as much
       
 5. ```preprocessing/run_mriqc_group.sh```
+    - example usage: ```./run_mriqc_group.sh```
     - quality control checks, verify outputs manually to look for outliers
         - absolute values don't matter as much
 
