@@ -18,13 +18,14 @@
 
 # What subject and session do you want to run? 
 
-# In[1]:
+# In[26]:
 
 
 sub = 'sub-001'
 session = 'ses-05'
 task='task-B_'  # '' (empty string) normally, task-A_ or similar otherwise
 func_task_name = 'B'  # used to search for functional run in bids format, e.g. sub-003_ses-01_task-study_run-01_space-T1w_desc-preproc_bold.nii.gz
+resample_voxel_size = True
 
 if sub=='sub-002':
     n_runs=9
@@ -40,24 +41,24 @@ else:
 # In[2]:
 
 
-make_avg_mask = 1
+make_avg_mask = 0
 
 
 # Do you want to load the raw 4D data and run the time-intensive NiftiMasker? 
 # If the 2D data already exist, set this to 0.
 
-# In[92]:
+# In[3]:
 
 
-load_epi = 1
+load_epi = 0
 
 
-# Do you want to resample the voxel size of the fMRI data? If the upsampled data already exist, set this to 0.
+# Do you want to resample the voxel size of the fMRI data? If the upsampled data already exist, set this to 0. If you do not want to resample voxels (resample_voxel_size is False), this will have no effect.
 
-# In[4]:
+# In[27]:
 
 
-resample_voxel_size = 1
+run_resample_voxel = 0
 
 
 # Do you need to upsample the fMRI data? If the upsampled data already exists, set this to 0.
@@ -65,7 +66,7 @@ resample_voxel_size = 1
 # In[5]:
 
 
-run_upsampling = 1
+run_upsampling = 0
 
 
 # Do you want to export design matrix to csv? 
@@ -95,7 +96,7 @@ run_reliability = 1
 
 # ## Import necessary packages
 
-# In[29]:
+# In[28]:
 
 
 import numpy as np
@@ -143,7 +144,7 @@ if resample_voxel_size:
 
 # ## Set paths and load settings
 
-# In[10]:
+# In[47]:
 
 
 example = 0
@@ -367,7 +368,7 @@ plt.ylabel('time (TR)',fontsize=16)
 # 
 # From GLMSingle FAQ: The safest approach is to completely zero out the data for a voxel that does not have full data for all of the runs that you are analyzing with GLMsingle.
 
-# In[24]:
+# In[68]:
 
 
 if make_avg_mask == 1:
@@ -399,29 +400,35 @@ elif make_avg_mask == 0:
     print('')
     avg_mask=nib.load(file_in)
 
-# plot
+
 t1_file = defaced_dir + sub + '_%s_T1w_defaced.nii.gz' %session
 t1_img = image.load_img(t1_file)
-plot_roi(avg_mask, bg_img=t1_img)
 
-# mask info
-dimsize=avg_mask.header.get_zooms()
-affine_mat = avg_mask.affine
-brain=avg_mask.get_fdata()
-xyz=brain.shape #xyz dimensionality of brain mask and epi data
+def mask_info(avg_mask, t1):
+    plot_roi(avg_mask, bg_img=t1)
+    
+    # mask info
+    dimsize=avg_mask.header.get_zooms()
+    affine_mat = avg_mask.affine
+    brain=avg_mask.get_fdata()
+    xyz=brain.shape #xyz dimensionality of brain mask and epi data
+    
+    print('Mask dimensions:', dimsize)
+    print('')
+    print('Affine:')
+    print(affine_mat)
+    print('')
+    print(f'There are {np.sum(brain)} voxels in the included brain mask\n')
 
-print('Mask dimensions:', dimsize)
-print('')
-print('Affine:')
-print(affine_mat)
-print('')
-print(f'There are {np.sum(brain)} voxels in the included brain mask\n')
+    return dimsize, affine_mat, brain, xyz
+
+dimsize, affine_mat, brain, xyz = mask_info(avg_mask, t1_img)
 
 
 # ## Apply mask to each run of functional data
 # Data will go from 4D (x,y,z,t) to 2D
 
-# In[83]:
+# In[25]:
 
 
 def compare_mask_epi_dims(epi_file, mask):
@@ -459,10 +466,10 @@ epi_file=f"{datadir}/{session}/func/{sub}_{session}_task-{func_task_name}_run-01
 compare_mask_epi_dims(epi_file, avg_mask)
 
 
-# In[100]:
+# In[29]:
 
 
-def load_bold(in_file, mask, out_file, run):
+def fit_save_bold(in_file, mask, out_file, run):
     epi_masker=NiftiMasker(mask_img=mask)
     print('loading data for run', run+1, ':', in_file, '\n')
     
@@ -475,7 +482,7 @@ def load_bold(in_file, mask, out_file, run):
     return epi_mask_data
 
 
-# In[93]:
+# In[41]:
 
 
 # variables that will contain bold time-series and design matrices from each run
@@ -486,7 +493,7 @@ if load_epi == 1:
     for run in range(0,n_runs):
         epi_file = f"{datadir}/{session}/func/{sub}_{session}_{task}run-{(run+1):02}_space-T1w_desc-preproc_bold.nii.gz"
         filename = os.path.join(outputdir, sub, '%s_%s_task-%s_run-0%i_2D_bold' %(sub,session,func_task_name,run+1))
-        epi_mask_data = load_bold(epi_file, avg_mask, filename, run)
+        epi_mask_data = fit_save_bold(epi_file, avg_mask, filename, run)
         
         # add this run's data to data variable
         data.append(epi_mask_data)
@@ -516,15 +523,40 @@ print('number of runs in BOLD data:', len(data))
 # ## Resample voxel size 
 # We will optionally resample the voxel size of the functional runs
 
-# In[55]:
+# In[48]:
 
 
 if resample_voxel_size:
+    # set variables that are needed regardless of whether we want to run the voxel resampling (run_resample_voxel) or load in resampled data
+
+    # directory containing all resampled files
     resampled_dir = f"{homedir}/derivatives/resampled_task-{func_task_name}"
     os.makedirs(resampled_dir, exist_ok=True)
     os.makedirs(f"{resampled_dir}/func", exist_ok=True)
     print(f'directory to save resampled data:\n\t{resampled_dir}\n', flush=True)
-    
+
+    # file name helper variables
+    vox_dim_str = str(resampled_vox_size).replace('.', '_')  # in case the voxel size has a decimal, replace with an underscore
+    resampled_suffix = f"resampled_{vox_dim_str}mm_{resample_method}"
+
+    # mask paths
+    m = '%s_%s_%sbrain' % (sub, session, task)
+    mask_in_name = f"{maskdir}/{m}.nii.gz"
+    mask_out_name = f"{resampled_dir}/{m}_{resampled_suffix}.nii.gz"
+
+    # #     
+    # def a():
+    #     for d in range(len(data)):
+    #         resample_func_name = f"func/{sub}_{session}_task-{func_task_name}_run-{d+1:02}_space-T1w_desc-preproc_bold"
+    #         out_npy_name = f"{resampled_dir}/{resample_func_name}_{resampled_suffix}.npy"
+    #         print(out_npy_name)
+    #         data[d] = fit_save_bold(all_out_names[d], resampled_mask, out_npy_name, d)
+
+
+# In[33]:
+
+
+if resample_voxel_size and run_resample_voxel:    
     # check affines of all the bold runs we just loaded in 
     d0_affine = nilearn.masking.unmask(data[0].T, avg_mask).affine
     print(d0_affine)
@@ -536,18 +568,16 @@ if resample_voxel_size:
     print("all the BOLD runs and boldref affines match!")
 
 
-# In[103]:
+# In[34]:
 
 
-if resample_voxel_size:
+if resample_voxel_size and run_resample_voxel:
     # now that we've checked that the bold and boldrefs have the same affines (i.e. they're in the same space),
     # we just need to pick one of them and resample it to our desired voxel size using flirt, then use that as a 
     # reference image to resample all the bold runs. then proceed to the rest of the script as normal
     
     omat_name = f"{resampled_dir}/boldref_omat"
     ref_name = f"{resampled_dir}/boldref_resampled"
-    vox_dim_str = str(resampled_vox_size).replace('.', '_')  # in case the voxel size has a decimal, replace with an underscore
-    resampled_suffix = f"resampled_{vox_dim_str}mm_{resample_method}"
     print(f"path to save transformation matrix (should be the identity matrix): {omat_name}")
     print(f"path to save resampled boldref image: {ref_name}")
 
@@ -576,14 +606,11 @@ if resample_voxel_size:
         all_out_names.append(out_name)
 
 
-# In[105]:
+# In[35]:
 
 
-if resample_voxel_size == 1:
+if resample_voxel_size and run_resample_voxel:
     # resample the avg_mask
-    m = '%s_%s_%sbrain' % (sub, session, task)
-    mask_in_name = f"{maskdir}/{m}.nii.gz"
-    mask_out_name = f"{resampled_dir}/{m}_{resampled_suffix}.nii.gz"
     os.system(f"flirt -in {mask_in_name} \
                       -ref {ref_name} \
                       -out {mask_out_name} \
@@ -600,21 +627,39 @@ if resample_voxel_size == 1:
         resample_func_name = f"func/{sub}_{session}_task-{func_task_name}_run-{d+1:02}_space-T1w_desc-preproc_bold"
         out_npy_name = f"{resampled_dir}/{resample_func_name}_{resampled_suffix}.npy"
         print(out_npy_name)
-        data[d] = load_bold(all_out_names[d], resampled_mask, out_npy_name, d)
+        data[d] = fit_save_bold(all_out_names[d], resampled_mask, out_npy_name, d)
     
+    avg_mask = resampled_mask  # replace the old avg_mask with the resampled mask from here on
 
 
-# In[107]:
+# In[52]:
 
 
-print(data[0].shape)
+if resample_voxel_size and not run_resample_voxel:
+    for d in range(len(data)):
+        resample_func_name = f"func/{sub}_{session}_task-{func_task_name}_run-{d+1:02}_space-T1w_desc-preproc_bold"
+        out_npy_name = f"{resampled_dir}/{resample_func_name}_{resampled_suffix}.npy"
+        assert exists(out_npy_name)  # if we want to resample voxel size but not recompute it, the file must exist
+        print(f"loading data from: {out_npy_name}")
+        data[d] = np.load(out_npy_name)
+
+    print("\nresampled data loaded!")
+    print(f"data shape: {data[0].shape}")
+
+
+# In[69]:
+
+
+if resample_voxel_size and not run_resample_voxel:
+    avg_mask = nib.load(mask_out_name)  # load the resampled mask from path to override avg_mask
+    dimsize, affine_mat, brain, xyz = mask_info(avg_mask, t1_img)
 
 
 # ## Upsample fMRI data to 1-sec TR
 # At this point, we have extracted all brain voxels and flattened the data to 2D (voxels,TR). 
 # Now we will interpolate the time-series to go from 1.5 sec TR to 1 sec TR. 
 
-# In[108]:
+# In[53]:
 
 
 from tseriesinterp import *
@@ -625,13 +670,13 @@ from tseriesinterp import *
 # from tseriesinterp import * # or whatever name you want.
 
 
-# In[109]:
+# In[54]:
 
 
 # data[0]
 
 
-# In[110]:
+# In[55]:
 
 
 # Upsample one run as an example
@@ -639,7 +684,7 @@ from tseriesinterp import *
 # data_upsampled.shape
 
 
-# In[111]:
+# In[56]:
 
 
 voxel_id=500
@@ -657,7 +702,7 @@ ax.set_ylabel('Voxel Intensity')
 # ax.set_ylabel('Voxel Intensity')
 
 
-# In[43]:
+# In[57]:
 
 
 data_upsampled = []
@@ -696,17 +741,14 @@ elif run_upsampling == 0:
         print('BOLD data shape:', data_upsampled[run].shape)
         print('TRs in this run:', TR_run_upsampled[run])
             
+if len(data_upsampled) >= 1:
+    for d in range(len(data_upsampled)-1):
+        assert not np.all(data_upsampled[d] == data_upsampled[d+1])
 print('')
 print('number of runs in upsampled BOLD data:', len(data_upsampled))   
 
 
-# In[44]:
-
-
-len(data_upsampled)
-
-
-# In[45]:
+# In[79]:
 
 
 # print some relevant metadata
@@ -718,18 +760,12 @@ for i in range(len(data_upsampled)):
     print(f'{data_upsampled[i].shape}') 
 print(f'The stimulus duration is {stimdur} seconds\n')
 print(f'The TR is {tr} seconds\n')
-print(f'There are {np.sum(brain)} voxels in the included brain mask\n')
+print(f'There are {np.sum(brain)} voxels in the included brain mask\n')  
 #print(f'There are {np.sum(roi)} voxels in the included visual ROI\n')
 print(f'Numeric precision of data is: {type(data[0][0,0])}\n')
 
 
-# In[46]:
-
-
-assert not np.all(data_upsampled[0] == data_upsampled[1])
-
-
-# In[47]:
+# In[80]:
 
 
 # plot example slice from run 1 and run 16
@@ -750,7 +786,7 @@ for runnum in range(n_runs):
     # plt.title('example slice from run 9',fontsize=16)
 
 
-# In[48]:
+# In[81]:
 
 
 # plot example slice from run 1 and run 16
@@ -773,7 +809,7 @@ plt.imshow(run16[:,:,z,8])
 plt.title('example slice from run 9',fontsize=16)
 
 
-# In[49]:
+# In[82]:
 
 
 # Plot design matrix for each run
@@ -787,7 +823,7 @@ for run in range(n_runs):
 
 # ## Run GLMsingle with default parameters to estimate single-trial betas
 
-# In[50]:
+# In[83]:
 
 
 # outputs and figures will be stored in a folder (you can specify its name
