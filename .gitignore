@@ -1,1 +1,8 @@
 analysis/examples/data/nsdcoreexampledataset.mat
+analysis/GLMsingle_*.ipynb
+!analysis/GLMsingle.ipynb
+analysis/*test*.ipynb
+slurms/*
+.ipynb_checkpoints/
+__pycache__/
+

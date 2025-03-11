@@ -118,7 +118,10 @@ def tseriesinterp(m, trorig, trnew, dim=None, numsamples=None,
 
             temp.append(pchip(timeorig, dat, extrapolate=True)(timenew))
         else:
-            temp.append(pchip(timeorig, mflat[:, chunk],
+            # print(f"chunk type: {type(chunk)}, values: {chunk}")
+            # print(chunk.shape, chunk.dtype)
+            # print(f"mflat.shape: {mflat.shape}")
+            temp.append(pchip(timeorig, mflat[:, chunk.astype(int)],
                               extrapolate=True)(timenew))
     stacktemp = np.hstack(temp)
 

@@ -20,6 +20,8 @@
 
 module purge
 source ~/mindeye/bin/activate
-cd /usr/people/ri4541/rtmindeye/code/analysis
+cd /usr/people/ri4541/rtmindeye/data_sub-005/bids/derivatives/glmsingle_task-C_ses-02
 
-jupyter nbconvert --to script GLMsingle.ipynb && ipython GLMsingle.py
+jupyter nbconvert --to script ~/rtmindeye/code/analysis/GLMsingle.ipynb --output-dir ./ \
+&& \
+ipython GLMsingle.py

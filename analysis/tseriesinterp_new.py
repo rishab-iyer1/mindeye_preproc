@@ -118,10 +118,7 @@ def tseriesinterp(m, trorig, trnew, dim=None, numsamples=None,
 
             temp.append(pchip(timeorig, dat, extrapolate=True)(timenew))
         else:
-            # print(f"chunk type: {type(chunk)}, values: {chunk}")
-            # print(chunk.shape, chunk.dtype)
-            # print(f"mflat.shape: {mflat.shape}")
-            temp.append(pchip(timeorig, mflat[:, chunk.astype(int)],
+            temp.append(pchip(timeorig, mflat[:, chunk],
                               extrapolate=True)(timenew))
     stacktemp = np.hstack(temp)
 
@@ -229,19 +226,19 @@ def reshape2D_undo(f, dim, msize):
     return m
 
 
-def chunking(vect, chunk_length, chunknum=None):
+def chunking(vect, num, chunknum=None):
     """ chunking
     Input:
         <vect> is a array
-        <chunk_length> is desired length of a chunk
+        <num> is desired length of a chunk
         <chunknum> is chunk number desired (here we use a 1-based
-              indexing, i.e. you may want the first chunk, or the second
+              indexing, i.e. you may want the frist chunk, or the second
               chunk, but not the zeroth chunk)
     Returns:
         [numpy array object]:
 
         return a numpy array object of chunks.  the last vector
-        may have fewer than <chunk_length> elements.
+        may have fewer than <num> elements.
 
         also return the beginning and ending indices associated with
         this chunk in <xbegin> and <xend>.
@@ -257,18 +254,17 @@ def chunking(vect, chunk_length, chunknum=None):
 
     """
     if chunknum is None:
-        new_vect = np.hstack(vect)
-        chunked = []
-        for i in range(len(new_vect)):
-            a = new_vect[i*chunk_length:i*chunk_length+chunk_length]
-            if len(a) > 0:
-                chunked.append(a)
-        return np.asarray(chunked, dtype=object)
-    else:
-        f = chunking(vect, chunk_length)
-        # double check that these behave like in matlab (xbegin)
-        xbegin = (chunknum-1)*chunk_length+1
-        # double check that these behave like in matlab (xend)
-        xend = np.min((len(vect), chunknum*chunk_length))
+        nchunk = int(np.ceil(len(vect)/num))
+        f = []
+        for point in range(nchunk):
+            f.append(vect[point*num:np.min((len(vect), int((point+1)*num)))])
 
-        return np.asarray(f[chunk_length-1], dtype=object), xbegin, xend
+        return np.asarray(f)
+    else:
+        f = chunking(vect, num)
+        # double check that these behave like in matlab (xbegin)
+        xbegin = (chunknum-1)*num+1
+        # double check that these behave like in matlab (xend)
+        xend = np.min((len(vect), chunknum*num))
+
+        return np.asarray(f[num-1]), xbegin, xend
