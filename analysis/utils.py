@@ -282,3 +282,107 @@ def apply_thresh(inp, thresh, output=None):
         output: str, path to the output image file
     """
     os.system(f"fslmaths {inp} -thr {thresh} -bin {output}")
+
+
+def load_design_files(sub, session, func_task_name, designdir, design_ses_list=None):
+    """
+    Load design files for a given subject and session
+    
+    Args:
+        sub: str, subject ID (e.g., 'sub-001')
+        session: str, session ID (e.g., 'ses-01' or 'all')
+        func_task_name: str, task name (e.g., 'A', 'B', 'C')
+        designdir: str, path to design directory
+        design_ses_list: list, list of sessions to process when session='all'
+    
+    Returns:
+        tuple containing:
+        - data: pandas DataFrame with design information
+        - starts: array of trial start times
+        - images: array of image names
+        - is_new_run: array of boolean flags for new runs
+        - unique_images: array of unique image names
+        - len_unique_images: int, number of unique images
+    """
+    if (sub=='sub-001' and session=='ses-01') or (sub=='sub-002' and session=='ses-01'):
+        filename = f"{designdir}/csv/{sub}_{session}.csv"
+        data = pd.read_csv(filename)
+        images = data['current_image'].values[23:]
+        starts = data['trial.started'].values[23:]
+        is_new_run = data['is_new_run'].values[23:]
+        
+    elif (sub=='sub-001' and session in ('ses-02', 'ses-03', 'ses-04', 'ses-05')) or \
+         (sub=='sub-002' and session in ('ses-02')) or sub=='sub-003' or \
+         (sub=='sub-004' and session in ('ses-01', 'ses-02')) or \
+         (sub=='sub-005' and session in ('ses-01', 'ses-02', 'ses-03')):
+        
+        if (sub=='sub-001' and session in ('ses-05')):
+            if func_task_name == 'A':
+                filename = f"{designdir}/csv/{sub}_ses-05.csv"
+            elif func_task_name == 'B':
+                filename = f"{designdir}/csv/{sub}_ses-06.csv"
+            elif func_task_name == 'C':
+                filename = f"{designdir}/csv/{sub}_ses-07.csv"
+
+        elif (sub=='sub-002' and session in ('ses-02')):
+            if func_task_name == 'A':
+                filename = f"{designdir}/csv/{sub}_ses-06.csv"
+            elif func_task_name == 'B':
+                filename = f"{designdir}/csv/{sub}_ses-07.csv"
+            elif func_task_name == 'C':
+                filename = f"{designdir}/csv/{sub}_ses-05.csv"
+        
+        elif (sub=='sub-004' and session in ('ses-01')):
+            if func_task_name == 'A':
+                filename = f"{designdir}/csv/{sub}_ses-07.csv"
+            elif func_task_name == 'B':
+                filename = f"{designdir}/csv/{sub}_ses-05.csv"
+            elif func_task_name == 'C':
+                filename = f"{designdir}/csv/{sub}_ses-06.csv"
+        elif (sub=='sub-004' and session in ('ses-02')):
+            assert func_task_name == 'C'
+            filename = f"{designdir}/csv/{sub}_ses-08.csv"
+
+        elif sub=='sub-005' and session in ('ses-01', 'ses-02', 'ses-03'):
+            filename = f"{designdir}/csv/{sub}_{session}.csv"
+        
+        data, starts, images, is_new_run = process_design(filename)
+        print(f"Data shape: {data.shape}")
+
+    elif sub in ('sub-004', 'sub-005') and session == 'all':
+        assert func_task_name == 'C'
+        assert design_ses_list is not None, "design_ses_list must be provided when session='all'"
+
+        data_list = []
+        starts_list = []
+        images_list = []
+        is_new_run_list = []
+
+        for ses in design_ses_list:
+            filename = f"{designdir}/csv/{sub}_{ses}.csv"
+            print(f"Loading: {filename}")
+
+            data_tmp, starts_tmp, images_tmp, is_new_run_tmp = process_design(filename)
+
+            data_list.append(data_tmp)
+            starts_list.append(starts_tmp)
+            images_list.append(images_tmp)
+            is_new_run_list.append(is_new_run_tmp)
+
+        # Concatenate all lists
+        data = pd.concat(data_list, ignore_index=True)
+        starts = np.concatenate(starts_list)
+        images = np.concatenate(images_list)
+        is_new_run = np.concatenate(is_new_run_list)
+            
+    else:
+        raise Exception("undefined subject and/or session")
+
+    print(f"Using design file: {filename}")
+    
+    unique_images = np.unique(images.astype(str))
+    len_unique_images = len(unique_images)
+    print('Total number of images:', len(images))
+    print("Number of unique images:", len_unique_images)
+    
+    return data, starts, images, is_new_run, unique_images, len_unique_images
