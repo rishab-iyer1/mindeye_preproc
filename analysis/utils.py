@@ -303,6 +303,7 @@ def load_design_files(sub, session, func_task_name, designdir, design_ses_list=N
         - starts: array of trial start times
         - images: array of image names
         - is_new_run: array of boolean flags for new runs
+        - image_names: array of image names
         - unique_images: array of unique image names
         - len_unique_images: int, number of unique images
     """
@@ -312,6 +313,7 @@ def load_design_files(sub, session, func_task_name, designdir, design_ses_list=N
         images = data['current_image'].values[23:]
         starts = data['trial.started'].values[23:]
         is_new_run = data['is_new_run'].values[23:]
+        image_names = data['current_image'].values[23:]
         
     elif (sub=='sub-001' and session in ('ses-02', 'ses-03', 'ses-04', 'ses-05')) or \
          (sub=='sub-002' and session in ('ses-02')) or sub=='sub-003' or \
@@ -348,7 +350,7 @@ def load_design_files(sub, session, func_task_name, designdir, design_ses_list=N
         elif sub=='sub-005' and session in ('ses-01', 'ses-02', 'ses-03'):
             filename = f"{designdir}/csv/{sub}_{session}.csv"
         
-        data, starts, images, is_new_run = process_design(filename)
+        data, starts, images, is_new_run, image_names = process_design(filename)
         print(f"Data shape: {data.shape}")
 
     elif sub in ('sub-004', 'sub-005') and session == 'all':
@@ -359,24 +361,25 @@ def load_design_files(sub, session, func_task_name, designdir, design_ses_list=N
         starts_list = []
         images_list = []
         is_new_run_list = []
+        image_names_list = []
 
         for ses in design_ses_list:
             filename = f"{designdir}/csv/{sub}_{ses}.csv"
             print(f"Loading: {filename}")
 
-            data_tmp, starts_tmp, images_tmp, is_new_run_tmp = process_design(filename)
+            data_tmp, starts_tmp, images_tmp, is_new_run_tmp, image_names_tmp = process_design(filename)
 
             data_list.append(data_tmp)
             starts_list.append(starts_tmp)
             images_list.append(images_tmp)
             is_new_run_list.append(is_new_run_tmp)
-
+            image_names_list.append(image_names_tmp)
         # Concatenate all lists
         data = pd.concat(data_list, ignore_index=True)
         starts = np.concatenate(starts_list)
         images = np.concatenate(images_list)
         is_new_run = np.concatenate(is_new_run_list)
-            
+        image_names = np.concatenate(image_names_list)
     else:
         raise Exception("undefined subject and/or session")
 
@@ -387,4 +390,4 @@ def load_design_files(sub, session, func_task_name, designdir, design_ses_list=N
     print('Total number of images:', len(images))
     print("Number of unique images:", len_unique_images)
     
-    return data, starts, images, is_new_run, unique_images, len_unique_images
+    return data, starts, images, is_new_run, image_names, unique_images, len_unique_images
