@@ -69,13 +69,15 @@ def process_design(filename):
         starts: Array of trial start times
         images: Array of image names
         is_new_run: Array of boolean flags indicating new runs
+        image_names: Array of image names
     """
     data = pd.read_csv(filename)
-    data = data.dropna(subset=['current_image'])  # in these csv files, there are blanks between runs
+    data = data.dropna(subset=['current_image'])  # there are nans (blank cells) between runs
     starts = data['trial.started'].values[10:]
     images = data['current_image'].values[10:]
     is_new_run = data['is_new_run'].values[10:]
-    return data, starts, images, is_new_run
+    image_names = data['current_image'].values[10:]
+    return data, starts, images, is_new_run, image_names
 
 
 def create_design_matrix(images, starts, is_new_run, unique_images, n_runs, n_trs, len_unique_images):
