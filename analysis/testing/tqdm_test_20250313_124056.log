@@ -1,0 +1,35 @@
+TQDM Test Log
+============
+Start Time: 2025-03-13 12:40:56
+
+Test 1: Simple progress bar
+--------------------
+Simple progress:   0%|          | 0/5 [00:00<?, ?it/s]Simple progress:  20%|██        | 1/5 [00:01<00:04,  1.00s/it]Simple progress:  40%|████      | 2/5 [00:02<00:03,  1.00s/it]Simple progress:  60%|██████    | 3/5 [00:03<00:02,  1.00s/it]Simple progress:  80%|████████  | 4/5 [00:04<00:01,  1.00s/it]Simple progress: 100%|██████████| 5/5 [00:05<00:00,  1.00s/it]Simple progress: 100%|██████████| 5/5 [00:05<00:00,  1.00s/it]
+
+Test 2: Nested progress bars
+--------------------
+Outer loop:   0%|          | 0/3 [00:00<?, ?it/s]
+Inner loop 0:   0%|          | 0/2 [00:00<?, ?it/s][A
+Inner loop 0:  50%|█████     | 1/2 [00:00<00:00,  2.00it/s][A
+Inner loop 0: 100%|██████████| 2/2 [00:01<00:00,  1.99it/s][A
+                                                           [AOuter loop:  33%|███▎      | 1/3 [00:01<00:02,  1.01s/it]
+Inner loop 1:   0%|          | 0/2 [00:00<?, ?it/s][A
+Inner loop 1:  50%|█████     | 1/2 [00:00<00:00,  2.00it/s][A
+Inner loop 1: 100%|██████████| 2/2 [00:01<00:00,  2.00it/s][A
+                                                           [AOuter loop:  67%|██████▋   | 2/3 [00:02<00:01,  1.01s/it]
+Inner loop 2:   0%|          | 0/2 [00:00<?, ?it/s][A
+Inner loop 2:  50%|█████     | 1/2 [00:00<00:00,  2.00it/s][A
+Inner loop 2: 100%|██████████| 2/2 [00:01<00:00,  2.00it/s][A
+                                                           [AOuter loop: 100%|██████████| 3/3 [00:03<00:00,  1.00s/it]Outer loop: 100%|██████████| 3/3 [00:03<00:00,  1.00s/it]
+
+Test 3: Progress bar with additional output
+--------------------
+Progress with output:   0%|          | 0/3 [00:00<?, ?it/s]Additional output at step 0
+Progress with output:   0%|          | 0/3 [00:01<?, ?it/s, step=0]Progress with output:  33%|███▎      | 1/3 [00:01<00:02,  1.00s/it, step=0]Additional output at step 1
+Progress with output:  33%|███▎      | 1/3 [00:02<00:02,  1.00s/it, step=1]Progress with output:  67%|██████▋   | 2/3 [00:02<00:01,  1.00s/it, step=1]Additional output at step 2
+Progress with output:  67%|██████▋   | 2/3 [00:03<00:01,  1.00s/it, step=2]Progress with output: 100%|██████████| 3/3 [00:03<00:00,  1.00s/it, step=2]Progress with output: 100%|██████████| 3/3 [00:03<00:00,  1.00s/it, step=2]
+
+Execution Summary
+================
+End Time: 2025-03-13 12:41:07
+Total Duration: 11.21 seconds

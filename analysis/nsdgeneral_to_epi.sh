@@ -47,6 +47,21 @@ if [ "$multisession" = 1 ]; then
     mni_to_T1_xfm=$DERIV_DIR/fmriprep/$SUBJ_DIR/anat/${SUBJ_DIR}_from-MNI152NLin2009cAsym_to-T1w_mode-image_xfm.h5
 else
     mni_to_T1_xfm=$DERIV_DIR/fmriprep/$SUBJ_DIR/ses-${ref_session}/anat/${SUBJ_DIR}_ses-${ref_session}_from-MNI152NLin2009cAsym_to-T1w_mode-image_xfm.h5
+    # Check if the multisession anat directory exists
+    multisession_anat_dir=$DERIV_DIR/fmriprep/$SUBJ_DIR/anat
+    if [ -d "$multisession_anat_dir" ]; then
+        echo "Warning: A multisession anatomical directory exists at:"
+        echo "  $multisession_anat_dir"
+        echo "But you are using a single-session reference from: $mni_to_T1_xfm"
+        
+        # Prompt user for confirmation to proceed
+        read -p "Do you want to proceed with single-session mode? (y/n): " choice
+        case "$choice" in
+            y|Y ) echo "Proceeding with single-session reference." ;;
+            n|N ) echo "Exiting script. Run with --multisession if intended."; exit 1 ;;
+            * ) echo "Invalid response. Exiting."; exit 1 ;;
+        esac
+    fi
 fi
 subject_template_path=$DERIV_DIR/fmriprep/$SUBJ_DIR/ses-${session}/func/${SUBJ_DIR}_ses-${session}_task-${task_name}_run-01_space-T1w_boldref.nii.gz
 roi_in_epi_space=$MASK_DIR/${SUBJ_DIR}_ses-${session}${mask_name}_nsdgeneral.nii.gz

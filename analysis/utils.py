@@ -4,12 +4,14 @@ Utility functions to prepare data for GLMsingle
 
 import os
 from functools import wraps
+from datetime import datetime
 
 import nibabel as nib
 import numpy as np
 import pandas as pd
 from nilearn.maskers import NiftiMasker
 from nilearn.plotting import plot_roi
+from runs_config import RUNS_DATABASE
 
 def get_session_label(ses_list):
     """
@@ -391,3 +393,74 @@ def load_design_files(sub, session, func_task_name, designdir, design_ses_list=N
     print("Number of unique images:", len_unique_images)
     
     return data, starts, images, is_new_run, image_names, unique_images, len_unique_images
+
+
+def get_runs_per_session(sub, session, ses_list=None):
+    """
+    Get number of runs for a given subject and session(s)
+    
+    Args:
+        sub: str, subject ID (e.g., 'sub-001')
+        session: str, session ID (e.g., 'ses-01' or 'all')
+        ses_list: list, list of sessions when session='all'
+    
+    Returns:
+        tuple containing:
+        - n_runs: int, total number of runs
+        - runs_per_session: dict, number of runs per session
+    """
+    if sub not in RUNS_DATABASE:
+        raise ValueError(f"Subject {sub} not found in database")
+    
+    if session == 'all':
+        if ses_list is None:
+            raise ValueError("ses_list must be provided when session='all'")
+        
+        # Get runs for all requested sessions
+        runs_per_session = {
+            ses: RUNS_DATABASE[sub][ses]
+            for ses in ses_list
+            if ses in RUNS_DATABASE[sub]
+        }
+        
+        if not runs_per_session:
+            raise ValueError(f"No valid sessions found in database for subject {sub}")
+            
+        n_runs = sum(runs_per_session.values())
+    else:
+        if session not in RUNS_DATABASE[sub]:
+            raise ValueError(f"Session {session} not found in database for subject {sub}")
+        n_runs = RUNS_DATABASE[sub][session]
+        runs_per_session = {session: n_runs}
+
+    return n_runs, runs_per_session
+
+
+# def setup_glmsingle_dir(sub, ses_list, task_label=''):
+#     """
+#     Set up GLMsingle output directory and logging
+    
+#     Args:
+#         sub: str, subject ID (e.g. 'sub-001')
+#         ses_list: list, list of session IDs
+#         task_label: str, task ID (e.g. '_task-C')
+    
+#     Returns:
+#         glmsingle_dir: str, path to GLMsingle output directory
+#         log_file: str, path to log file
+#     """
+#     # Create session label
+#     # print(ses_list)
+#     session_label = get_session_label(ses_list)
+    
+#     # Create GLMsingle directory name
+#     glmsingle_dir = f"/usr/people/ri4541/rtmindeye/data_{sub}/bids/derivatives/glmsingle_{session_label}{task_label}"
+    
+#     # Create directory if it doesn't exist
+#     os.makedirs(glmsingle_dir, exist_ok=True)
+    
+#     # Set up log file with timestamp
+#     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+#     log_file = os.path.join(glmsingle_dir, f"execution_{timestamp}.log")
+    
+#     return glmsingle_dir, log_file
