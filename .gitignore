@@ -1,8 +1,27 @@
-analysis/examples/data/nsdcoreexampledataset.mat
-analysis/GLMsingle_*.ipynb
-!analysis/GLMsingle.ipynb
-analysis/*test*.ipynb
-slurms/*
-.ipynb_checkpoints/
-__pycache__/
+# analysis/examples/data/nsdcoreexampledataset.mat
+# analysis/GLMsingle_*
+# analysis/GLMsingle-*
+# analysis/*test*.ipynb
+# analysis/slurms/
+# analysis/logs/
+# analysis/
+# slurms/
+# .ipynb_checkpoints/
+# __pycache__/
+# ./run_jupyter_scotty.sh
 
+* 
+
+!.gitignore
+!README.md
+!analysis/GLMsingle.ipynb
+!analysis/testing/
+!analysis/utils.py
+!analysis/tseriesinterp.py
+!analysis/tseriesinterp_new.py
+!analysis/runs_config.py
+!analysis/run_glmsingle.py
+!analysis/nsdgeneral_to_epi.sh
+!analysis/nsdgeneral_to_MNI.nii.gz
+!analysis/mean_bold.ipynb
+!analysis/bold_spectral.ipynb

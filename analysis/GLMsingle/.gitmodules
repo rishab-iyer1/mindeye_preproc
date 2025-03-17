@@ -1,4 +1,0 @@
-[submodule "matlab/fracridge"]
-	path = matlab/fracridge
-	url = https://github.com/nrdg/fracridge.git
-	datalad-url = https://github.com/nrdg/fracridge.git
