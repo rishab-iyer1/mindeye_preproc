@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/mnt/cup/people/ri4541/fmri/bin/jupyter", line 5, in <module>
-    from jupyter_core.command import main
-ModuleNotFoundError: No module named 'jupyter_core'
