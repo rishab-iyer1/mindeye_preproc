@@ -1,15 +1,3 @@
-# analysis/examples/data/nsdcoreexampledataset.mat
-# analysis/GLMsingle_*
-# analysis/GLMsingle-*
-# analysis/*test*.ipynb
-# analysis/slurms/
-# analysis/logs/
-# analysis/
-# slurms/
-# .ipynb_checkpoints/
-# __pycache__/
-# ./run_jupyter_scotty.sh
-
 *
 !*/
 !.gitignore
