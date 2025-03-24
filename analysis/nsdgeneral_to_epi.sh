@@ -81,19 +81,18 @@ roi_img_path=$SCRIPT_DIR/nsdgeneral_to_MNI.nii.gz
 # ----------------------
 # Set MNI-to-T1 Transform Path
 # ----------------------
-if [[ "$session_label" == *"-"* ]]; then
+if [[ "$session_label" =~ ^ses-[0-9]+$ ]]; then
+    # Single-session case (only accepts format ses-x where x is any integer, i.e. ses-01)
+    ref_session=${ref_session:-$session_label}
+    mni_to_T1_xfm=$DERIV_DIR/fmriprep/$SUBJ_DIR/${ref_session}/anat/${SUBJ_DIR}_${ref_session}_from-MNI152NLin2009cAsym_to-T1w_mode-image_xfm.h5
+    first_session=$session_label
+else
     # Multi-session case (e.g., ses-01-02)
     multisession=1
     mni_to_T1_xfm=$DERIV_DIR/fmriprep/$SUBJ_DIR/anat/${SUBJ_DIR}_from-MNI152NLin2009cAsym_to-T1w_mode-image_xfm.h5
 
     # Extract first 6 characters (e.g., ses-01 from ses-01-02)
     first_session=${session_label:0:6}
-
-else
-    # Single-session case (e.g., ses-01)
-    ref_session=${ref_session:-$session_label}
-    mni_to_T1_xfm=$DERIV_DIR/fmriprep/$SUBJ_DIR/ses-${ref_session}/anat/${SUBJ_DIR}_ses-${ref_session}_from-MNI152NLin2009cAsym_to-T1w_mode-image_xfm.h5
-    first_session=$session_label
 fi
 
 subject_template_path=$DERIV_DIR/fmriprep/$SUBJ_DIR/${first_session}/func/${SUBJ_DIR}_${first_session}_task-${task_name}_run-01_space-T1w_boldref.nii.gz
@@ -102,6 +101,14 @@ subject_template_path=$DERIV_DIR/fmriprep/$SUBJ_DIR/${first_session}/func/${SUBJ
 # Set Output Mask Filename
 # ----------------------
 roi_in_epi_space=$MASK_DIR/${SUBJ_DIR}_${session_label}${mask_name}_nsdgeneral.nii.gz
+
+files=("$roi_img_path" "$subject_template_path" "$mni_to_T1_xfm")
+for file in "${files[@]}"; do
+    if [[ ! -e "$file" ]]; then
+        echo "Error: File not found - $file"
+        exit 1
+    fi
+done
 
 # ----------------------
 # Apply Transformation

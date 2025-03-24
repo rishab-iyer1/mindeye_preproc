@@ -5,7 +5,6 @@ import sys
 import subprocess
 import time
 from datetime import datetime
-# from utils import setup_glmsingle_dir
 
 def run_glmsingle(sub, session, ses_list, data_dir, glmsingle_dir):
     """
@@ -19,12 +18,20 @@ def run_glmsingle(sub, session, ses_list, data_dir, glmsingle_dir):
     # Set up directory and logging
     # glmsingle_dir, log_file = setup_glmsingle_dir(sub, ses_list, task_label=task_label)
     output_dir = f"/usr/people/ri4541/rtmindeye/{data_dir}/bids/derivatives/{glmsingle_dir}"
-
+    if not os.path.exists(output_dir):
+        ask = input(f'The specified glmsingle path does not exist:\n{output_dir}\nWould you like to create this path? (y/n): ')
+        if ask in ('Y', 'y'):
+            os.makedirs(output_dir)
+        elif ask in ('N', 'n'):
+            raise FileNotFoundError
+        else:
+            raise ValueError('Invalid response. Please respond with "y" or "n".')
+    # err
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_file = os.path.join(output_dir, f"execution_{timestamp}.log")
 
     # Convert notebook to script
-    notebook_path = os.path.join(os.path.dirname(__file__), 'GLMsingle.ipynb')
+    notebook_path = '/usr/people/ri4541/rtmindeye/code/analysis/GLMsingle.ipynb'
     script_path = os.path.join(output_dir, 'GLMsingle.py')
     
     print(f"Converting notebook to script...")
