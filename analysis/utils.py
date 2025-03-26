@@ -361,8 +361,7 @@ def load_design_files(sub, session, func_task_name, designdir, design_ses_list=N
         data, starts, images, is_new_run, image_names = process_design(filename)
         print(f"Data shape: {data.shape}")
 
-    elif sub in ('sub-004', 'sub-005') and session == 'all':
-        assert func_task_name == 'C'
+    elif sub in ('sub-001', 'sub-004', 'sub-005') and session == 'all':
         assert design_ses_list is not None, "design_ses_list must be provided when session='all'"
 
         data_list = []

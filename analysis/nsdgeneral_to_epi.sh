@@ -9,7 +9,7 @@ module load ants
 # ----------------------
 usage() {
     echo ""
-    echo "Usage: $0 <subj> <session_label> <task_name> <mask_name> [--ref_session=<session>] [--multisession] [--dry-run] [--data-folder=<folder>]"
+    echo "Usage: $0 <subj> <session_label> <task_name> <mask_name> [--ref_session=<session>] [--multisession] [--dry_run] [--data-folder=<folder>]"
     echo ""
     echo "Description: Converts the NSDGeneral mask to functional space, supporting single and multi-session data."
     echo ""
@@ -22,7 +22,7 @@ usage() {
     echo "Optional Arguments:"
     echo "  --ref_session=<session>  Specify a reference session for alignment (default: first session in label)"
     echo "  --multisession           Enable multi-session processing using fmriprep's anat folder"
-    echo "  --dry-run                Perform a dry run (prints actions instead of applying transforms)"
+    echo "  --dry_run                Perform a dry run (prints actions instead of applying transforms)"
     echo "  --data-folder=<folder>   Specify a custom data folder (default: data_sub-xxx)"
     echo "  --help                   Show this help message and exit"
     echo ""
@@ -31,7 +31,7 @@ usage() {
     echo "  Multi-session:        $0 005 ses-01-02 C _task-C --multisession"
     echo "  Default data folder:  $0 005 ses-01 C _task-C"
     echo "  Custom data folder:   $0 005 ses-01 C _task-C --data-folder=my_custom_folder"
-    echo "  Dry run:              $0 005 ses-01 C _task-C --dry-run"
+    echo "  Dry run:              $0 005 ses-01 C _task-C --dry_run"
     echo ""
     exit 0
 }
@@ -67,7 +67,7 @@ for arg in "$@"; do
         --multisession)
             multisession=1
             ;;
-        --dry-run)
+        --dry_run)
             dry_run=1
             ;;
         --data-folder=*)

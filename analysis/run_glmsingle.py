@@ -1,22 +1,21 @@
 #!/usr/bin/env python3
 
 import os
-import sys
+import argparse
 import subprocess
 import time
 from datetime import datetime
 
-def run_glmsingle(sub, session, ses_list, data_dir, glmsingle_dir):
+def run_glmsingle(data_dir, glmsingle_dir):
     """
     Run GLMsingle analysis with proper directory and logging setup
     
-    Args:
-        sub: str, subject ID (e.g. 'sub-001')
-        session: str, session ID (e.g. 'ses-02' or 'all')
-        ses_list: list, list of session IDs
     """
     # Set up directory and logging
     # glmsingle_dir, log_file = setup_glmsingle_dir(sub, ses_list, task_label=task_label)
+    assert os.path.exists(f"/usr/people/ri4541/rtmindeye/{data_dir}"), f'data directory does not exist:\n{data_dir}'
+    for term in ("glmsingle_", "_ses-", "_task-"):
+        assert term in str(glmsingle_dir)
     output_dir = f"/usr/people/ri4541/rtmindeye/{data_dir}/bids/derivatives/{glmsingle_dir}"
     if not os.path.exists(output_dir):
         ask = input(f'The specified glmsingle path does not exist:\n{output_dir}\nWould you like to create this path? (y/n): ')
@@ -52,20 +51,16 @@ def run_glmsingle(sub, session, ses_list, data_dir, glmsingle_dir):
         # Write header with execution info
         f.write(f"GLMsingle Execution Log\n")
         f.write(f"=====================\n")
-        f.write(f"Subject: {sub}\n")
-        f.write(f"Session: {session}\n")
-        f.write(f"Session List: {ses_list}\n")
         f.write(f"Start Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
         
         # Run the script and capture output
         process = subprocess.Popen(
-            ['ipython', script_path],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            universal_newlines=True,
-            bufsize=1  # Line buffering
-        )
-        
+                    ['ipython', script_path],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    universal_newlines=True,
+                    bufsize=1  # Line buffering
+                )
         # Write output to both console and log file
         while True:
             line = process.stdout.readline()
@@ -93,20 +88,29 @@ def run_glmsingle(sub, session, ses_list, data_dir, glmsingle_dir):
     print(f"Total Duration: {hours:02d}:{minutes:02d}:{seconds:02d}")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python run_glmsingle.py <subject> <session> <data_dir> <glmsingle_dir>")
-        print("Example: python ~/rtmindeye/code/analysis/run_glmsingle.py sub-001 ses-05 data_sub-001_ses-05 glmsingle_task-C_resampled_2_5mm_sinc")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Run GLMsingle with specified config")
+    parser.add_argument("data_dir", help="Data directory")
+    parser.add_argument("glmsingle_dir", help="GLMsingle directory")
+    parser.add_argument("sub", type=str, help="Subject ID (e.g., 'sub-001')")
+    parser.add_argument("session", type=str, help="Session ID (e.g., 'ses-01' (single-session), 'all' (multi-session))")
+    parser.add_argument("func_task_name", type=str, help="Functional task name (e.g., 'study')")
+    parser.add_argument("--resample_voxel_size", action='store_true', default=False, help="Resample voxel size flag (True/False)")
+    parser.add_argument("--ses_list", type=str, help="Comma-separated list of session IDs (e.g. ses-01,ses-02).")
+    parser.add_argument("--design_ses_list", type=str, help="list of design matrix session IDs (e.g. ['ses-01', 'ses-02']). Use only if session='all' and if the design matrix session ID doesn't match the scan's session ID.")
+    parser.add_argument("--ref_session", type=str, help="Reference session to draw anatomical from (e.g., 'ses-xx'). Use this only if the current session being analyzed does not have a T1 of its own. Make sure the current session and the provided reference session were fMRIPrepped together.")
+    parser.add_argument('--dry_run', action='store_true', help="Run script without executing GLMsingle.")
+
+    args = parser.parse_args()
     
-    sub = sys.argv[1]
-    session = sys.argv[2]
-    data_dir = sys.argv[3]
-    glmsingle_dir = sys.argv[4]
+    # argument validation
+    # TODO 
+
+    # set all args to be env variables; to be read in when running the main script
+    for arg, value in vars(args).items():
+        if args.dry_run:
+            print(f"os.environ[{arg.upper()}] -> {str(value)}")
+        else:
+            os.environ[arg.upper()] = str(value) if value is not None else ""
     
-    # Set up session list based on input
-    if session == "all":
-        ses_list = ["ses-02", "ses-03"]
-    else:
-        ses_list = [session]
-    # print(ses_list)
-    run_glmsingle(sub, session, ses_list, data_dir=data_dir, glmsingle_dir=glmsingle_dir) 
+    if not args.dry_run:
+        run_glmsingle(args.data_dir, args.glmsingle_dir)
