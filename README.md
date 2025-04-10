@@ -63,11 +63,11 @@
         - for example: https://github.com/PrincetonCompMemLab/real_time_mindEye2/blob/paul/psychopy_task/data/3_1_rtmindeye_2024-12-13_14h18.09.698.csv
     - rename the design file from 3_1_rtmindeye_2024-12-13_14h18.09.698.csv to sub-003_ses-01.csv
 
-2. ```analysis/nsdgeneral_to_epi.sh```
+2. Rename the data folder e.g. data_sub-003_ses-01
+
+3. ```analysis/nsdgeneral_to_epi.sh```
     - create an NSDgeneral mask for a subject containing primarily visual cortex voxels
       
-3. Rename the data folder with BIDS name e.g. data_sub-003_ses-01
-
 4. ```analysis/GLMsingle.ipynb```
     - edit GLMsingle.ipynb to match intended variables such as subject ID, session number, and other options
     - create data/bids/derivatives/glmsingle if it doesn't exist

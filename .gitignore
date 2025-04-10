@@ -13,3 +13,5 @@
 !analysis/nsdgeneral_to_MNI.nii.gz
 !analysis/mean_bold.ipynb
 !analysis/bold_spectral.ipynb
+!analysis/check_masks.py
+!analysis/create_final_masks.py
