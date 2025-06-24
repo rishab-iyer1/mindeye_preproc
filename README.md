@@ -20,35 +20,38 @@
     - ```source ~/fmri/bin/activate``` 
     - PyDeface should be pip installed prior to continuing
 
-1. ```preprocessing/step1_preproc.sh```
+3. ```preprocessing/step1_preproc.sh```
     - ```cd preprocessing```
     - example usage: ```./step1_preproc.sh 003 01 003_ses01_rtmindeye-1213-1401```
         - uses heudiconv to convert DICOMs to BIDS format
         - uses PyDeface to deface images
       
-2. ```preprocessing/step2_preproc.sh```
+4. ```preprocessing/step2_preproc.sh```
     - example usage: ```./step2_preproc.sh 003 01```
     - delete scouts and duplicate runs from the .tsv dile to match the files that are deleted by the step2 script
     - modify IntendedFor field in the fieldmap JSON files to be valid JSON format
     - current issues (TODO)
         - IntendedFor field in fmap folder gets added repeatedly if it already exists causing JSON errors
         - .tsv file doesn't update with deleted scout files
-      
-3. [BIDS Validator](https://bids-standard.github.io/bids-validator/)
+     
+5. [BIDS Validator](https://bids-standard.github.io/bids-validator/)
     - verify manually that the data is BIDS-compatible
         - address any red (errors); can ignore the yellow (warnings) because fMRIPrep will still work
-      
-4. ```preprocessing/run_mriqc.sh```
+
+Can easily run the next three commands in sequence with ```./run_fmriprep.sh 003 && ./run_mriqc.sh 003 && ./run_mriqc_group.sh```      
+
+
+6. ```preprocessing/run_mriqc.sh```
     - example usage: ```./run_mriqc.sh 003```
     - quality control checks, verify outputs manually to look for outliers 
         - absolute values don't matter as much
       
-5. ```preprocessing/run_mriqc_group.sh```
+7. ```preprocessing/run_mriqc_group.sh```
     - example usage: ```./run_mriqc_group.sh```
     - quality control checks, verify outputs manually to look for outliers
         - absolute values don't matter as much
 
-6. ```preprocessing/run_fmriprep.sh```
+8. ```preprocessing/run_fmriprep.sh```
     - example usage: ```./run_fmriprep.sh 003```
     - runs fMRIPrep for all sessions for an individual participant
 
@@ -66,14 +69,17 @@
 2. Rename the data folder e.g. data_sub-003_ses-01
 
 3. ```analysis/nsdgeneral_to_epi.sh```
+    - ```cd ../analysis/```
+    - example usage: ```./nsdgeneral_to_epi.sh 005 ses-04 D _task-D --data-folder=data_sub-005_ses-04```
     - create an NSDgeneral mask for a subject containing primarily visual cortex voxels
       
 4. ```analysis/GLMsingle.ipynb```
-    - edit GLMsingle.ipynb to match intended variables such as subject ID, session number, and other options
-    - create data/bids/derivatives/glmsingle if it doesn't exist
-    - ```cd <your glmsingle directory>```
-    - ```jupyter nbconvert --to script ~/rtmindeye/code/analysis/GLMsingle.ipynb --output-dir ./ && ipython GLMsingle.py | tee execution.log```
-        - this will convert the Jupyter notebook into a python script which will be saved to the directory you run this from, and print the outputs into a log file called execution.log
+    - if submitting a SLURM job, edit ```run_glmsingle.sh``` and ```GLMsingle.ipynb``` with the desired paths and settings
+    - if running directly (say on Scotty's login node):
+        - ```source ~/mindeye/bin/activate```
+        - use ```run_glmsingle.py``` to easily set various environment variables as command line arguments
+        - ```run_glmsingle.py --help``` for a list of all accepted arguments
+        - example usage: ```python ~/rtmindeye/code/analysis/run_glmsingle.py data_sub-005_ses-04 glmsingle_ses-04_task-D sub-005 ses-04 D```
     - get model accuracy (r^2)
     - get single-trial betas
     - get best-fitting HRF

@@ -325,8 +325,9 @@ def load_design_files(sub, session, func_task_name, designdir, design_ses_list=N
     elif (sub=='sub-001' and session in ('ses-02', 'ses-03', 'ses-04', 'ses-05')) or \
          (sub=='sub-002' and session in ('ses-02')) or sub=='sub-003' or \
          (sub=='sub-004' and session in ('ses-01', 'ses-02')) or \
-         (sub=='sub-005' and session in ('ses-01', 'ses-02', 'ses-03')) or \
-         (sub=='sub-006' and session in ('ses-01')):
+         (sub=='sub-005' and session in ('ses-01', 'ses-02', 'ses-03', 'ses-04')) or \
+         (sub=='sub-006' and session in ('ses-01')) or \
+         (sub=='sub-007' and session in ('ses-01')):
         
         if (sub=='sub-001' and session in ('ses-05')):
             if func_task_name == 'A':
@@ -357,6 +358,23 @@ def load_design_files(sub, session, func_task_name, designdir, design_ses_list=N
 
         elif (sub=='sub-005' and session in ('ses-01', 'ses-02', 'ses-03')) or sub=='sub-006' and session in ('ses-01'):
             filename = f"{designdir}/csv/{sub}_{session}.csv"
+
+        elif (sub=='sub-005' and session in ('ses-04')):
+            if func_task_name == 'D':
+                filename = f"{designdir}/csv/{sub}_ses-04.csv"
+            elif func_task_name == 'E':
+                filename = f"{designdir}/csv/{sub}_ses-05.csv"
+            elif func_task_name == 'B':
+                filename = f"{designdir}/csv/{sub}_ses-06.csv"
+
+        elif (sub=='sub-007' and session in ('ses-01')):
+            if func_task_name == 'E':
+                filename = f"{designdir}/csv/sub-008_ses-01.csv"
+            elif func_task_name == 'D':
+                filename = f"{designdir}/csv/sub-008_ses-02.csv"
+            elif func_task_name == 'B':
+                filename = f"{designdir}/csv/sub-008_ses-03.csv"
+
         
         data, starts, images, is_new_run, image_names = process_design(filename)
         print(f"Data shape: {data.shape}")
