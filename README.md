@@ -92,13 +92,14 @@ Can easily run the next three commands in sequence with ```./run_fmriprep.sh 003
     - once GLMsingle has run, move the output (only need TYPED_FITHRF_GLMDENOISE_RR.npz) into the glmsingle directory e.g. /scratch/gpfs/ri4541/MindEyeV2/src/mindeyev2/glmsingle_sub-003_ses-01
     - move the brain mask (..._brain.nii.gz) and the nsdgeneral mask (_nsdgeneral.nii.gz) into the same glmsingle directory as above
     - move the csv file (sub-003_ses-01.csv) to the mindeye directory (home/ri4541/real_time_mindEye2/csv)
-    - TODO edit nsdgeneral to epi script and mindeye main.ipynb nsdgeneral file name to include the session (only has subject so far), not super urgent but for consistent naming and redundancy
 
 2. Run main notebook on Della as a SLURM job
+    - update ```/home/ri4541/real_time_mindEye2/run_all_batch.slurm``` with the appropriate variables before submitting
+    - ```sbatch /home/ri4541/real_time_mindEye2/run_all_batch.slurm```
 
 3. Sync run with WandB
-    - Get the wandb sync command from the slurm .err file
-    - run in Della terminal
+    - get the wandb sync command from the slurm .err file
+    - run that wandb command in Della terminal, example usage: ```wandb sync /home/ri4541/real_time_mindEye2/wandb/offline-run-20250624_162835-sub-005_ses-04_task-B_bs24_MST_rishab_MSTsplit```
 
 4. If desired, run recon_inference, enhanced_recon_inference, and final_evaluations notebooks to get the full list of evaluations
 
