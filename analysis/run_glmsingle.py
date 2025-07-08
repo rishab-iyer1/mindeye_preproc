@@ -89,12 +89,15 @@ def run_glmsingle(data_dir, glmsingle_dir):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run GLMsingle with specified config")
-    parser.add_argument("data_dir", help="Data directory")
-    parser.add_argument("glmsingle_dir", help="GLMsingle directory")
+    parser.add_argument("data_dir", help="Data directory (i.e. data_sub-005_ses-04)")
+    parser.add_argument("glmsingle_dir", help="GLMsingle directory (i.e. glmsingle_ses-04_task-B_resampled_2_0mm_trilinear)")
     parser.add_argument("sub", type=str, help="Subject ID (e.g., 'sub-001')")
     parser.add_argument("session", type=str, help="Session ID (e.g., 'ses-01' (single-session), 'all' (multi-session))")
     parser.add_argument("func_task_name", type=str, help="Functional task name (e.g., 'study')")
     parser.add_argument("--resample_voxel_size", action='store_true', default=False, help="Resample voxel size flag (True/False)")
+    parser.add_argument("--run_resample_voxel", action='store_true', default=True, help="Whether to perform resampling (default: True). If False, assumes resampled data has been previously computed and loads it in. If True but resample_voxel_size is False, has no effect.")
+    parser.add_argument("--resampled_vox_size", type=float, help="Voxel size (mm isotropic) to resample to (e.g., 2.5)")
+    parser.add_argument("--resample_method", type=str, help="Resampling method (e.g., 'trilinear')")
     parser.add_argument("--ses_list", type=str, help="Comma-separated list of session IDs (e.g. ses-01,ses-02).")
     parser.add_argument("--design_ses_list", type=str, help="list of design matrix session IDs (e.g. ['ses-01', 'ses-02']). Use only if session='all' and if the design matrix session ID doesn't match the scan's session ID.")
     parser.add_argument("--ref_session", type=str, help="Reference session to draw anatomical from (e.g., 'ses-xx'). Use this only if the current session being analyzed does not have a T1 of its own. Make sure the current session and the provided reference session were fMRIPrepped together.")
